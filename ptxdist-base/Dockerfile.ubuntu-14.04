@@ -1,0 +1,57 @@
+################################################################################
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 - 2022 TQ-Systems GmbH <license@tq-group.com>
+# author: Martin Schmiedel <martin.schmiedel@tq-group.com>
+################################################################################
+
+ARG registry_base_url
+FROM ${registry_base_url}/base:ubuntu-14.04
+
+# Add recommended packages for ptxdist 
+RUN apt-get update && apt-get -y upgrade && apt-get install -y \
+	bison \
+	ccache \
+	dot2tex \
+	flex \
+	gettext \
+	groff-base \
+	libncurses-dev \
+	lzop \
+	python \
+	python-dev \
+	texlive-base \
+	texlive-fonts-recommended \
+	texlive-latex-extra \
+	texlive-xetex \
+	zip \
+&& apt-get autoremove --yes && apt-get clean --yes
+
+# prepare to have a ptxdistrc at hand for next steps
+COPY ptxdist/ptxdistrc.default /root/ptxdistrc.default
+
+# Install set of ptxdist versions in use for old BSP
+# get it from download server, unpack, configure build an install and finally
+# clean temporary folders and archives
+RUN for version in 2013.03 2013.12 2015.05 2016.04 ; do \
+	cd /root; \
+		echo ${version}; wget https://public.pengutronix.de/software/ptxdist/ptxdist-${version}.0.tar.bz2; \
+		tar -jxf ptxdist-${version}.0.tar.bz2 --directory /root; \
+		cp /root/ptxdistrc.default /root/ptxdist-${version}.0/config/setup/ptxdistrc.default ; \
+		cd /root/ptxdist-${version}.0; ./configure; make ; make install; cd /root; \
+		rm -f ptxdist-${version}.0.tar.bz2; \
+		rm -rf ptxdist-${version}.0; \
+	done
+
+# Install set of toolchains in use for old BSP.
+# Since they are not available for our distro to use with apt
+# get them from package pool, install them and clean temporary archives
+RUN cd /root && for toolchain in \
+		https://debian.pengutronix.de/debian/pool/main/o/oselas.toolchain-2011.11.4-arm-1136jfs-linux-gnueabi-gcc-4.6.2-glibc-2.14.1-binutils-2.21.1a-kernel-2.6.39-sanitized/oselas.toolchain-2011.11.4-arm-1136jfs-linux-gnueabi-gcc-4.6.2-glibc-2.14.1-binutils-2.21.1a-kernel-2.6.39-sanitized_2011.11.4_amd64.deb \
+		https://debian.pengutronix.de/debian/pool/main/o/oselas.toolchain-2013.12.2-arm-v7a-linux-gnueabihf-gcc-4.8.3-glibc-2.18-binutils-2.24-kernel-3.12-sanitized/oselas.toolchain-2013.12.2-arm-v7a-linux-gnueabihf-gcc-4.8.3-glibc-2.18-binutils-2.24-kernel-3.12-sanitized_2013.12.2_amd64.deb \
+		https://debian.pengutronix.de/debian/pool/main/o/oselas.toolchain-2012.12.2-arm-cortexa8-linux-gnueabi-gcc-4.7.3-glibc-2.16.0-binutils-2.22-kernel-3.6-sanitized/oselas.toolchain-2012.12.2-arm-cortexa8-linux-gnueabi-gcc-4.7.3-glibc-2.16.0-binutils-2.22-kernel-3.6-sanitized_2012.12.2_amd64.deb \
+		https://debian.pengutronix.de/debian/pool/main/o/oselas.toolchain/oselas.toolchain-2014.12.2-arm-v7a-linux-gnueabihf-gcc-4.9.2-glibc-2.20-binutils-2.24-kernel-3.16-sanitized_2014.12.2_amd64.deb \
+		https://debian.pengutronix.de/debian/pool/main/o/oselas.toolchain/oselas.toolchain-2014.12.2-arm-v5te-linux-gnueabi-gcc-4.9.2-glibc-2.20-binutils-2.24-kernel-3.16-sanitized_2014.12.2_amd64.deb \
+		https://debian.pengutronix.de/debian/pool/main/o/oselas.toolchain/oselas.toolchain-2016.06.1-arm-v5te-linux-gnueabi-gcc-5.4.0-glibc-2.23-binutils-2.26-kernel-4.6-sanitized_2016.06.1_amd64.deb \
+	; do echo ${toolchain}; wget ${toolchain}; done && \
+	dpkg -i *.deb; \
+	rm -f *.deb;

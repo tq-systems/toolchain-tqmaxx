@@ -1,0 +1,25 @@
+################################################################################
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 - 2022 TQ-Systems GmbH <license@tq-group.com>
+# author: Martin Schmiedel <martin.schmiedel@tq-group.com>
+################################################################################
+
+ARG registry_base_url
+
+FROM ${registry_base_url}/ptxdist-base:ubuntu-14.04
+
+# add user
+# to enable bind mounts on jenkins slaves
+# appropriate users must be added to every jenkins slave
+
+RUN mkdir /home/ptxdist_14; groupadd -g 10001 ptxdist_14; groupadd -g 632 jenkins; \
+ 	useradd -r -u 10001 -g ptxdist_14 -G jenkins -d /home/ptxdist_14 ptxdist_14; \
+	chown ptxdist_14:ptxdist_14 /home/ptxdist_14;
+
+# install java from launchpad (jenkins needs java8)
+
+RUN echo "deb [trusted=yes] http://ppa.launchpad.net/openjdk-r/ppa/ubuntu trusty main" >> /etc/apt/sources.list 
+
+RUN apt-get update && apt-get -y upgrade && apt-get install -y \
+	openjdk-8-jre \
+&& apt-get autoremove --yes && apt-get clean --yes

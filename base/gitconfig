@@ -1,0 +1,7 @@
+[http]
+lowSpeedLimit = 1000
+lowSpeedTime = 45
+
+[https]
+lowSpeedLimit = 1000
+lowSpeedTime = 45

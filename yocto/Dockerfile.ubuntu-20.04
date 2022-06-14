@@ -1,0 +1,24 @@
+################################################################################
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 - 2022 TQ-Systems GmbH <license@tq-group.com>
+# author: Martin Schmiedel <martin.schmiedel@tq-group.com>
+################################################################################
+
+ARG registry_base_url
+FROM ${registry_base_url}/yocto-base:ubuntu-20.04
+
+RUN apt-get update && apt-get -y upgrade && apt-get install -y \
+	openjdk-11-jre \
+	lavacli \
+&& apt-get autoremove --yes && apt-get clean --yes
+RUN rm -rf /var/lib/apt/lists/*
+
+# add users
+# to enable bind mounts on jenkins slaves
+# appropriate users must be added to every jenkins slave
+
+RUN mkdir /home/yocto_hardknott; groupadd -g 10011 yocto_hardknott; \
+	useradd -r -u 10011 -g yocto_hardknott -d /home/yocto_hardknott yocto_hardknott; \
+	chown yocto_hardknott:yocto_hardknott /home/yocto_hardknott;
+
+USER yocto_hardknott

@@ -1,0 +1,29 @@
+################################################################################
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 - 2022 TQ-Systems GmbH <license@tq-group.com>
+# author: Martin Schmiedel <martin.schmiedel@tq-group.com>
+################################################################################
+
+ARG registry_base_url
+FROM ${registry_base_url}/yocto-base:ubuntu-18.04
+
+RUN apt-get update && apt-get -y upgrade && apt-get install -y \
+	openjdk-8-jre \
+&& apt-get autoremove --yes && apt-get clean --yes
+RUN rm -rf /var/lib/apt/lists/*
+
+# add users
+# to enable bind mounts on jenkins slaves
+# appropriate users must be added to every jenkins slave
+
+RUN mkdir /home/yocto_zeus; groupadd -g 10010 yocto_zeus; \
+	useradd -r -u 10010 -g yocto_zeus -d /home/yocto_zeus yocto_zeus; \
+	chown yocto_zeus:yocto_zeus /home/yocto_zeus;
+
+RUN mkdir /home/yocto_zeus_tqma8; groupadd -g 10012 yocto_zeus_tqma8; \
+	useradd -r -u 10012 -g yocto_zeus_tqma8 -d /home/yocto_zeus_tqma8 yocto_zeus_tqma8; \
+	chown yocto_zeus_tqma8:yocto_zeus_tqma8 /home/yocto_zeus_tqma8;
+
+# add code signing tools from nxp
+ADD --chown=yocto_zeus_tqma8:yocto_zeus_tqma8 yocto/cst /home/yocto_zeus_tqma8/bin/cst
+RUN chmod +x /home/yocto_zeus_tqma8/bin/cst

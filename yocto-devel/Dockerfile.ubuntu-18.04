@@ -1,0 +1,33 @@
+################################################################################
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 - 2022 TQ-Systems GmbH <license@tq-group.com>
+# author: Martin Schmiedel <martin.schmiedel@tq-group.com>
+################################################################################
+
+ARG registry_base_url
+FROM ${registry_base_url}/yocto-base:ubuntu-18.04
+
+ENV USER=devel USER_ID=1000 USER_GID=1000
+
+RUN apt-get update && apt-get -y upgrade && apt-get install -y \
+	bash-completion \
+	nano \
+	stgit \
+	tmux \
+&& apt-get autoremove --yes && apt-get clean --yes
+RUN rm -rf /var/lib/apt/lists/*
+
+# add user to enable bind mounts
+
+RUN groupadd --gid "${USER_GID}" "${USER}" && \
+    useradd \
+      --uid ${USER_ID} \
+      --gid ${USER_GID} \
+      --create-home \
+      --shell /bin/bash \
+      ${USER}
+
+COPY scripts/usermap.sh /
+RUN  chmod u+x /usermap.sh
+
+ENTRYPOINT ["/usermap.sh"]

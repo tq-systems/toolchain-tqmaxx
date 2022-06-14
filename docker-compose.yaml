@@ -1,0 +1,160 @@
+################################################################################
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 - 2022 TQ-Systems GmbH <license@tq-group.com>
+# author: Martin Schmiedel <martin.schmiedel@tq-group.com>
+################################################################################
+
+version: '3'
+services:
+
+  base-ubuntu-14.04:
+    build:
+      context: .
+      dockerfile: base/Dockerfile.ubuntu-14.04
+    image: ${REGISTRY_BASE_URL}/base:ubuntu-14.04
+
+  base-ubuntu-16.04:
+    build:
+      context: .
+      dockerfile: base/Dockerfile.ubuntu-16.04
+    image: ${REGISTRY_BASE_URL}/base:ubuntu-16.04
+
+  base-ubuntu-18.04:
+    build:
+      context: .
+      dockerfile: base/Dockerfile.ubuntu-18.04
+    image: ${REGISTRY_BASE_URL}/base:ubuntu-18.04
+
+  base-ubuntu-20.04:
+    build:
+      context: .
+      dockerfile: base/Dockerfile.ubuntu-20.04
+    image: ${REGISTRY_BASE_URL}/base:ubuntu-20.04
+
+  tqma8-ubuntu-18.04:
+    build:
+      context: .
+      dockerfile: tqma8/Dockerfile.ubuntu-18.04
+    image: ${REGISTRY_BASE_URL}/tqma8:ubuntu-18.04
+    depends_on:
+      - base-ubuntu-18.04
+
+  yocto-base-ubuntu-16.04:
+    build:
+      context: .
+      dockerfile: yocto-base/Dockerfile.ubuntu-16.04
+    image: ${REGISTRY_BASE_URL}/yocto-base:ubuntu-16.04
+    depends_on:
+      - base-ubuntu-16.04
+
+  yocto-base-ubuntu-18.04:
+    build:
+      context: .
+      dockerfile: yocto-base/Dockerfile.ubuntu-18.04
+    image: ${REGISTRY_BASE_URL}/yocto-base:ubuntu-18.04
+    depends_on:
+      - base-ubuntu-18.04
+
+  yocto-base-ubuntu-20.04:
+    build:
+        context: .
+        dockerfile: yocto-base/Dockerfile.ubuntu-20.04
+    image: ${REGISTRY_BASE_URL}/yocto-base:ubuntu-20.04
+    depends_on:
+      - base-ubuntu-20.04
+
+  yocto-ubuntu-16.04:
+    build:
+      context: .
+      dockerfile: yocto/Dockerfile.ubuntu-16.04
+    image: ${REGISTRY_BASE_URL}/yocto:ubuntu-16.04
+    depends_on:
+      - yocto-base-ubuntu-16.04
+
+  yocto-ubuntu-18.04:
+    build:
+      context: .
+      dockerfile: yocto/Dockerfile.ubuntu-18.04
+    image: ${REGISTRY_BASE_URL}/yocto:ubuntu-18.04
+    depends_on:
+      - yocto-base-ubuntu-18.04
+
+  yocto-ubuntu-20.04:
+    build:
+        context: .
+        dockerfile: yocto/Dockerfile.ubuntu-20.04
+    image: ${REGISTRY_BASE_URL}/yocto:ubuntu-20.04
+    depends_on:
+      - yocto-base-ubuntu-20.04
+
+  yocto-devel-ubuntu-16.04:
+    build:
+      context: .
+      dockerfile: yocto-devel/Dockerfile.ubuntu-16.04
+    image: ${REGISTRY_BASE_URL}/yocto-devel:ubuntu-16.04
+    depends_on:
+      - yocto-base-ubuntu-16.04
+
+  yocto-devel-ubuntu-18.04:
+    build:
+      context: .
+      dockerfile: yocto-devel/Dockerfile.ubuntu-18.04
+    image: ${REGISTRY_BASE_URL}/yocto-devel:ubuntu-18.04
+    depends_on:
+      - yocto-base-ubuntu-18.04
+
+  yocto-devel-ubuntu-20.04:
+    build:
+        context: .
+        dockerfile: yocto-devel/Dockerfile.ubuntu-20.04
+    image: ${REGISTRY_BASE_URL}/yocto-devel:ubuntu-20.04
+    depends_on:
+      - yocto-base-ubuntu-20.04
+
+  ptxdist-base-ubuntu-14.04:
+    build:
+      context: .
+      dockerfile: ptxdist-base/Dockerfile.ubuntu-14.04
+    image: ${REGISTRY_BASE_URL}/ptxdist-base:ubuntu-14.04
+    depends_on:
+      - base-ubuntu-14.04
+
+  ptxdist-base-ubuntu-18.04:
+    build:
+      context: .
+      dockerfile: ptxdist-base/Dockerfile.ubuntu-18.04
+    image: ${REGISTRY_BASE_URL}/ptxdist-base:ubuntu-18.04
+    depends_on:
+      - base-ubuntu-18.04
+
+  ptxdist-ubuntu-14.04:
+    build:
+      context: .
+      dockerfile: ptxdist/Dockerfile.ubuntu-14.04
+    image: ${REGISTRY_BASE_URL}/ptxdist:ubuntu-14.04
+    depends_on:
+      - ptxdist-base-ubuntu-14.04
+
+  ptxdist-ubuntu-18.04:
+    build:
+      context: .
+      dockerfile: ptxdist/Dockerfile.ubuntu-18.04
+    image: ${REGISTRY_BASE_URL}/ptxdist:ubuntu-18.04
+    depends_on:
+      - ptxdist-base-ubuntu-18.04
+
+  ptxdist-devel-ubuntu-14.04:
+    build:
+      context: .
+      dockerfile: ptxdist-devel/Dockerfile.ubuntu-14.04
+    image: ${REGISTRY_BASE_URL}/ptxdist-devel:ubuntu-14.04
+    depends_on:
+      - ptxdist-base-ubuntu-14.04
+
+  ptxdist-devel-ubuntu-18.04:
+    build:
+      context: .
+      dockerfile: ptxdist-devel/Dockerfile.ubuntu-18.04
+    image: ${REGISTRY_BASE_URL}/ptxdist-devel:ubuntu-18.04
+    depends_on:
+      - ptxdist-base-ubuntu-18.04

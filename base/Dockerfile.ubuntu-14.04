@@ -1,0 +1,37 @@
+################################################################################
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 - 2022 TQ-Systems GmbH <license@tq-group.com>
+# author: Martin Schmiedel <martin.schmiedel@tq-group.com>
+################################################################################
+
+FROM amd64/ubuntu:14.04
+
+# set environment
+ENV DEBIAN_FRONTEND=noninteractive
+
+ADD certificates/* /usr/local/share/ca-certificates/
+RUN update-ca-certificates && rm -f /usr/local/share/ca-certificates/.keepme
+
+#
+# see README in directory
+#
+RUN echo "Acquire::http::Pipeline-Depth "0";" > /etc/apt/apt.conf.d/docker-tweak
+
+RUN apt-get update && apt-get -y upgrade && apt-get install -y \
+	bc \
+	build-essential \	
+	file \
+	gawk \
+	texinfo \
+	unzip \
+	wget \
+    git \
+&& apt-get autoremove --yes && apt-get clean --yes
+RUN rm -rf /var/lib/apt/lists/*
+
+RUN locale-gen en_US.UTF-8
+ENV LC_ALL C.UTF-8
+ENV LANG C.UTF-8
+ENV LANGUAGE C.UTF-8
+
+ADD base/gitconfig /etc/gitconfig
