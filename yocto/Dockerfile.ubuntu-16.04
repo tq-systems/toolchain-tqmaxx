@@ -27,7 +27,3 @@ RUN mkdir /home/yocto_zeus_tqma8; groupadd -g 10012 yocto_zeus_tqma8; \
 RUN mkdir /home/yocto_rocko; groupadd -g 10013 yocto_rocko; \
 	useradd -r -u 10013 -g yocto_rocko -d /home/yocto_rocko yocto_rocko; \
 	chown yocto_rocko:yocto_rocko /home/yocto_rocko;
-
-# add code signing tools from nxp
-ADD --chown=yocto_zeus_tqma8:yocto_zeus_tqma8 yocto/cst /home/yocto_zeus_tqma8/bin/cst
-RUN chmod +x /home/yocto_zeus_tqma8/bin/cst
