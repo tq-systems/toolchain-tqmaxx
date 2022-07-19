@@ -92,7 +92,7 @@ $ docker run -it --rm <REGISTRY_BASE_URL>/base:latest /bin/bash
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
 $ IMAGE=<service name from docker-compose.yaml>
-$ docker-compose build --no-cache --force-rm ${IMAGE}
+$ docker-compose build --build-arg registry_base_url=${REGISTRY_BASE_URL} --no-cache --force-rm ${IMAGE}
 ```
 
 ## Makefile support
