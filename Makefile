@@ -47,7 +47,7 @@ all:
 	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker-compose build ${BUILD_ARGS} ${ALL_IMAGES}
 
 new:
-	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker-compose build --no-cache ${BUILD_ARGS} ${ALL_IMAGES}
+	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker-compose build --no-cache --force-rm ${BUILD_ARGS} ${ALL_IMAGES}
 
 image:
 	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker-compose build ${BUILD_ARGS} ${IMAGE}
