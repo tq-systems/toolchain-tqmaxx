@@ -83,12 +83,19 @@ $docker system prune -f
 ```
 
 ### Run shell inside container
+
+You must pull or build an image before running it. For running
+containers with development images, see [Container for local
+development](#container-for-local-development).
+
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
-$ docker run -it --rm <REGISTRY_BASE_URL>/base:latest /bin/bash
+$ IMAGE=<service name from docker-compose.yaml>
+$ docker-compose run --rm ${IMAGE}
 ```
 
 ### Rebuild image from scratch
+
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
 $ IMAGE=<service name from docker-compose.yaml>
@@ -147,9 +154,9 @@ The following example shows, how to use this:
   development host
 
 ```bash
-$ REGISTRY_BASE_URL=<registry server/path on server>
-$ IMAGE=${REGISTRY_BASE_URL}/[yocto|ptxdist]-devel:ubuntu-version>
-$ docker run --name <name> --rm -ti -e HOST_USER_ID=$(id -u) -e HOST_USER_GID=$(id -g) -v ${HOME}/devel:/devel ${IMAGE}
+$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ IMAGE=<service name from docker-comose.yaml>
+$ docker-compose run --name <name> --rm -e HOST_USER_ID=$(id -u) -e HOST_USER_GID=$(id -g) -v ${HOME}/devel:/devel ${IMAGE}
 # now inside container
 $ cd /devel/u-boot
 $ export CROSS_COMPILE=<path to gcc>/<gcc base name>
