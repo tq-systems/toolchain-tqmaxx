@@ -52,6 +52,19 @@ new:
 image:
 	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker-compose build ${BUILD_ARGS} ${IMAGE}
 
+run:
+	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && \
+	docker-compose run --rm  ${IMAGE}
+
+	# Example from README.md with custom options for ptxdist and yocto
+	# devel templates:
+	#
+	# docker-compose run --rm  \
+	# 	-e HOST_USER_ID=$(shell id -u) \
+	# 	-e HOST_USER_GID=$(shell id -g) \
+	# 	--volume ${HOME}/devel:/devel \
+	# 	${IMAGE}
+
 push:
 	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker-compose push
 
@@ -69,4 +82,4 @@ print:
 	@echo "YOCTO:	${YOCTO_BASE_IMAGES} ${YOCTO_IMAGES} ${YOCTO_DEVEL_IMAGES}"
 	@echo "YOCTO:	${TQMA8_IMAGES}"
 
-.PHONY: all new image push pull print clean update
+.PHONY: all new image run push pull print clean update
