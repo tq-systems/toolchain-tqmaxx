@@ -35,7 +35,8 @@ If certificates are needed inside the containers to access git servers etc.
 these can be included into the container images by copying the certificate files
 to the certificates folder before building.
 
-To work with an own container registry the URL has to be supplied via the environment:
+To work with an own container registry the URL has to be supplied via the environment
+(this is necessary only once per shell session):
 
 ```bash
 $export REGISTRY_BASE_URL=${MY_REGISTRY_BASE_URL}
@@ -105,7 +106,44 @@ $ docker-compose build --build-arg registry_base_url=${REGISTRY_BASE_URL} --no-c
 ## Makefile support
 
 For maintenance and development a simple Makefile is provided, that wraps the
-above mentioned steps and allows (re)building of all images.
+above mentioned steps and allows (re)building of all images. Again, setting the
+REGISTRY_BASE_URL is only needed once per shell session.
+
+### Build all images
+
+```bash
+$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ make all
+```
+
+### Rebuild all images from scratch
+
+```bash
+$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ make new
+```
+
+### Build a single image
+
+```bash
+$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ IMAGE=<service name from docker-comose.yaml> make image
+```
+
+### Run shell inside container
+
+See [Container for local development](#container-for-local-development)).
+
+```bash
+$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ IMAGE=<service name from docker-comose.yaml> make run
+```
+
+### Other commands
+
+The Makefile also provides the targets `push`, `pull`, `update`, `clean`
+and `print` that affect all images. Nevertheless, login to the registry is
+needed for pusing, pulling and updating the images
 
 ## Supported images
 
@@ -137,12 +175,57 @@ above mentioned steps and allows (re)building of all images.
 | yocto-ubuntu-18.04                 | yocto:ubuntu-16.04         | yocto support for Ubuntu 16.04, jenkins support   |
 | yocto-ubuntu-20.04                 | yocto:ubuntu-20.04         | yocto support for Ubuntu 20.04, jenkins support   |
 
-## Container for local development
+## Customizing images and containers
 
 To decouple container images as a fixed build environment from sources and build
-result, the docker bind mount feature can be used. For ptxdist and yocto a set
-of templates is supplied, that allow mapping of user and group ID between host
-and container. These images have the string `devel` in their name.
+result, the docker bind mount feature can be used.
+
+### Specifying volumes in docker-compose
+
+Host paths and their mountpoints inside the container can be defined as volumes
+on a per service base. Find the desired service in the `docker-compose.yaml`
+file and add a `volumes` block:
+
+```diff
+ yocto-devel-ubuntu-20.04:
+   build:
+       context: .
+       dockerfile: yocto-devel/Dockerfile.ubuntu-20.04
++  volumes:
++    - ${HOME}/devel:/devel:rw
+   image: ${REGISTRY_BASE_URL}/yocto-devel:ubuntu-20.04
+   depends_on:
+     - yocto-base-ubuntu-20.04
+```
+
+A volume is not inherited from a service that is given as dependency. That
+means if you specify a volume in a base service (e.g. `yocto-base-ubuntu-20.04`
+in the example above), it is not mounted in an service that depends on that
+base service.
+
+Many more options are available and documented in
+https://docs.docker.com/compose/compose-file.
+
+### Custom docker-compose run command
+
+The options that can be set in the `docker-compose.yaml` file, can also be
+passed as options to the `docker-compose` CLI:
+
+```bash
+$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ docker-compose run --volume=${HOME}/devel:/devel <service name from docker-compose.yaml>
+```
+
+One can add custom command line arguments for the `docker-compose run`
+command to the `run` target in the Makefile. This way, the `run` target can
+be used as a shorthand and volumes are mounted on every container that is
+started with the `run` target.
+
+### Container for local development
+
+For ptxdist and yocto a set of templates is supplied, that allow mapping of
+user and group ID between host and container. These images have the string
+`devel` in their name.
 
 The following example shows, how to use this:
 
@@ -156,7 +239,7 @@ The following example shows, how to use this:
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
 $ IMAGE=<service name from docker-comose.yaml>
-$ docker-compose run --name <name> --rm -e HOST_USER_ID=$(id -u) -e HOST_USER_GID=$(id -g) -v ${HOME}/devel:/devel ${IMAGE}
+$ docker-compose run --name <name> --rm -e HOST_USER_ID=$(id -u) -e HOST_USER_GID=$(id -g) --volume ${HOME}/devel:/devel ${IMAGE}
 # now inside container
 $ cd /devel/u-boot
 $ export CROSS_COMPILE=<path to gcc>/<gcc base name>
