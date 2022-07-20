@@ -41,7 +41,7 @@ To work with an own container registry the URL has to be supplied via the enviro
 $export REGISTRY_BASE_URL=${MY_REGISTRY_BASE_URL}
 ```
 
-### Build Image
+### Build image
 Use *docker-compose* to build an image:
 
 ```bash
@@ -50,7 +50,7 @@ $ IMAGE=<service name from docker-compose.yaml>
 $ docker-compose build --build-arg registry_base_url=${REGISTRY_BASE_URL} ${IMAGE}
 ```
 
-### Deploy Images
+### Deploy images
 
 Push image(s) to the configured registry:
 
@@ -63,7 +63,7 @@ $ docker-compose push ${IMAGE}
 $ docker logout
 ```
 
-### Get Images
+### Get images
 
 Pull image(s) from the configured registry:
 
@@ -82,7 +82,7 @@ $ docker logout
 $docker system prune -f
 ```
 
-### Run Shell inside container
+### Run shell inside container
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
 $ docker run -it --rm <REGISTRY_BASE_URL>/base:latest /bin/bash
