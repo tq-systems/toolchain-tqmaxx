@@ -70,7 +70,7 @@ Pull image(s) from the configured registry:
 
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
-# if IMAGE is not set, all services declared in docker-compose.yaml are pushed
+# if IMAGE is not set, all services declared in docker-compose.yaml are pulled
 $ IMAGE=<service name from docker-compose.yaml>
 $ docker login -u <user> ${REGISTRY_BASE_URL}
 $ docker-compose pull ${IMAGE}
