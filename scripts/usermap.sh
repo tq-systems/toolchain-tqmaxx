@@ -1,10 +1,17 @@
 #!/bin/bash
-
+################################################################################
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2022 TQ-Systems GmbH <oss@ew.tq-group.com>
+# author: Markus Niebel
+# Solution insipred by https://gist.github.com/renzok/29c9e5744f1dffa392cf
+# and suggestions from Paul Gerber
 ################################################################################
 # adjust UID and GID for user $USER
 # Container should be started with:
-# docker run --name tqma53 --rm -ti -e HOST_USER_ID=$(id -u) -e HOST_USER_GID=$(id -g) \
-#     -v ${HOME}/devel:/devel <REGISTRY_BASE_URL>/<container>:<tag>
+# docker run --name <name> --rm -ti \
+#	-e HOST_USER_ID=$(id -u) -e HOST_USER_GID=$(id -g) \
+#	-v <shared data path on host>:<shared data path in container> \
+#	<REGISTRY_BASE_URL>/<container>:<tag>
 ################################################################################
 
 if [ -z "${USER}" ]; then
