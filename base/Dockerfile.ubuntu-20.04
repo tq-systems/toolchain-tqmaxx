@@ -30,9 +30,7 @@ RUN rm -rf /var/lib/apt/lists/*
 ADD certificates/* /usr/local/share/ca-certificates/
 RUN update-ca-certificates && rm -f /usr/local/share/ca-certificates/.keepme
 
-RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
-ENV LC_ALL C.UTF-8
-ENV LANG C.UTF-8
-ENV LANGUAGE C.UTF-8
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen && \
+update-locale LANG=C.UTF-8 LANGUAGE=C.UTF-8 LC_ALL=C.UTF-8
 
 ADD base/gitconfig /etc/gitconfig
