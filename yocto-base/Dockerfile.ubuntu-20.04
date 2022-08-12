@@ -9,8 +9,6 @@ FROM ${registry_base_url}/base:ubuntu-20.04
 
 RUN dpkg --add-architecture i386
 
-RUN less /etc/apt.conf
-
 RUN apt-get update && apt-get -y upgrade && apt-get install -y \
 	chrpath \
 	cpio \
