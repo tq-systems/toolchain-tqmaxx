@@ -16,7 +16,7 @@ RUN echo "Acquire::http::Pipeline-Depth "0";" > /etc/apt/apt.conf.d/docker-tweak
 
 RUN apt-get update && apt-get -y upgrade && apt-get install -y \
 	bc \
-	build-essential \	
+	build-essential \
 	file \
 	gawk \
 	git \
