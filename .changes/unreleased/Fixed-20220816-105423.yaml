@@ -1,0 +1,3 @@
+kind: Fixed
+body: 'locale settings: use update-locale instead of docker ENV'
+time: 2022-08-16T10:54:23.190105651+02:00
