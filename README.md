@@ -8,6 +8,19 @@ Collect build scripts and docker image creation for TQ ARM Boards in one place.
 
 See file COPYING and license texts under LICENSES.
 
+## Versioning
+
+Semantic versioning will be used for this project.
+
+Given a version number MAJOR.MINOR.PATCH, increment the:
+
+- MAJOR version for new dockerfiles
+- MINOR version for functional changes on existing dockerfiles / compose / logic
+- PATCH version for bugfixes on existing Dockerfiles (e.g. missing tools)
+- NO_INCREMENT for changes on docs, comments, formatting
+
+Additional labels for pre-release and build metadata are available as extensions to the MAJOR.MINOR.PATCH format.
+
 ## Prerequisites
 
 The documentation herein is written and tested using Ubuntu 18.04 / 20.04, but
@@ -26,6 +39,7 @@ The following things are used in this repo and throughout this README:
   `${REGISTRY_BASE_URL}`variable is used
 - Usage of a `docker-compose.yaml` file and the `docker-compose` tool to declare
   dependencies between docker images (called services in docker-compose)
+- The changelog is created with [changie](https://changie.dev/guide/installation/)
 
 ## Usage
 
