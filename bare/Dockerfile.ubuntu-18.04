@@ -1,0 +1,40 @@
+################################################################################
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 - 2022 TQ-Systems GmbH <license@tq-group.com>
+# author: Martin Schmiedel <martin.schmiedel@tq-group.com>
+################################################################################
+
+ARG registry_base_url
+FROM ${registry_base_url}/bare-base:ubuntu-18.04
+
+ARG ci_user_name
+ARG ci_user_uid
+ARG ci_user_gid
+
+ENV USER=${ci_user_name} USER_ID=${ci_user_uid} USER_GID=${ci_user_gid}
+
+# add user
+# to enable bind mounts on jenkins slaves
+# appropriate users must be added to every jenkins slave
+
+RUN \
+	groupadd --gid "${USER_GID}" "${USER}" && \
+	useradd \
+		--uid ${USER_ID} \
+		--gid ${USER_GID} \
+		--create-home \
+		--shell /bin/bash \
+		${USER}
+
+RUN \
+	apt-get update && apt-get -y upgrade && \
+	apt-get install -y \
+		python3 && \
+	apt-get autoremove --yes && apt-get clean --yes && \
+	rm -rf /var/lib/apt/lists/*
+
+COPY bare/.buildman /root
+
+RUN git clone --depth=1 --branch v2021.10 https://source.denx.de/u-boot/u-boot.git /root/u-boot
+
+USER "${USER}"

@@ -42,6 +42,11 @@ YOCTO_IMAGES = $(addprefix yocto-${DISTRO}-,${YOCTO_VERSIONS})
 TQMA8_VERSIONS = 18.04 
 TQMA8_IMAGES = $(addprefix tqma8-${DISTRO}-,${TQMA8_VERSIONS})
 
+BARE_VERSIONS = 18.04
+BARE_BASE_IMAGES = $(addprefix bare-base-${DISTRO}-,${BARE_VERSIONS})
+BARE_DEVEL_IMAGES = $(addprefix bare-devel-${DISTRO}-,${BARE_VERSIONS})
+BARE_IMAGES = $(addprefix bare-${DISTRO}-,${BARE_VERSIONS})
+
 ALL_IMAGES = \
 	${BASE_IMAGES} \
 	${PTX_BASE_IMAGES} \
@@ -50,6 +55,9 @@ ALL_IMAGES = \
 	${YOCTO_BASE_IMAGES} \
 	${YOCTO_DEVEL_IMAGES} \
 	${YOCTO_IMAGES} \
+	${BARE_BASE_IMAGES} \
+	${BARE_DEVEL_IMAGES} \
+	${BARE_IMAGES} \
 	${TQMA8_IMAGES}
 
 all:
@@ -89,6 +97,7 @@ print:
 	@echo "BASE:	${BASE_IMAGES}"
 	@echo "PTX:	${PTX_BASE_IMAGES} ${PTX_IMAGES} ${PTX_DEVEL_IMAGES}"
 	@echo "YOCTO:	${YOCTO_BASE_IMAGES} ${YOCTO_IMAGES} ${YOCTO_DEVEL_IMAGES}"
-	@echo "YOCTO:	${TQMA8_IMAGES}"
+	@echo "BARE:	${BARE_BASE_IMAGES} ${BARE_IMAGES} ${BARE_DEVEL_IMAGES}"
+	@echo "TQMA8:	${TQMA8_IMAGES}"
 
 .PHONY: all new image run push pull print clean update

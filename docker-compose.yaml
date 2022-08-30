@@ -39,6 +39,30 @@ services:
     depends_on:
       - base-ubuntu-18.04
 
+  bare-base-ubuntu-18.04:
+    build:
+      context: .
+      dockerfile: bare-base/Dockerfile.ubuntu-18.04
+    image: ${REGISTRY_BASE_URL}/bare-base:ubuntu-18.04
+    depends_on:
+      - base-ubuntu-18.04
+
+  bare-ubuntu-18.04:
+    build:
+      context: .
+      dockerfile: bare/Dockerfile.ubuntu-18.04
+    image: ${REGISTRY_BASE_URL}/bare:ubuntu-18.04
+    depends_on:
+      - bare-base-ubuntu-18.04
+
+  bare-devel-ubuntu-18.04:
+    build:
+      context: .
+      dockerfile: bare-devel/Dockerfile.ubuntu-18.04
+    image: ${REGISTRY_BASE_URL}/bare-devel:ubuntu-18.04
+    depends_on:
+      - bare-base-ubuntu-18.04
+
   yocto-base-ubuntu-16.04:
     build:
       context: .
