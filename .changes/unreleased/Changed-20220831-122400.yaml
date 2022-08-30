@@ -1,0 +1,3 @@
+kind: Changed
+body: "treewide: Dockerfiles: save one RUN statement for apt blocks"
+time: 2022-08-31T12:24:00.739909184+02:00
