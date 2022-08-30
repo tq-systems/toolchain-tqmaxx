@@ -24,8 +24,8 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
 	texinfo \
 	unzip \
 	wget \
-&& apt-get autoremove --yes && apt-get clean --yes
-RUN rm -rf /var/lib/apt/lists/*
+&& apt-get autoremove --yes && apt-get clean --yes && \
+rm -rf /var/lib/apt/lists/*
 
 ADD certificates/* /usr/local/share/ca-certificates/
 RUN update-ca-certificates && rm -f /usr/local/share/ca-certificates/.keepme

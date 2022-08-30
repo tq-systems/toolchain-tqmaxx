@@ -22,13 +22,13 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
 	build-essential \
 	file \
 	gawk \
+	git \
 	locales \
 	texinfo \
 	unzip \
 	wget \
-    git \
-&& apt-get autoremove --yes && apt-get clean --yes
-RUN rm -rf /var/lib/apt/lists/*
+&& apt-get autoremove --yes && apt-get clean --yes && \
+rm -rf /var/lib/apt/lists/*
 
 RUN locale-gen --lang en_US.UTF-8 && \
 	update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
