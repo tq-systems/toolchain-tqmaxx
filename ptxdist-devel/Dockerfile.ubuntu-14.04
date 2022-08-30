@@ -9,13 +9,15 @@ FROM ${registry_base_url}/ptxdist-base:ubuntu-14.04
 
 ENV USER=devel USER_ID=1000 USER_GID=1000
 
-RUN apt-get update && apt-get -y upgrade && apt-get install -y \
-	bash-completion \
-	dialog \
-	nano \
-	stgit \
-&& apt-get autoremove --yes && apt-get clean --yes
-RUN rm -rf /var/lib/apt/lists/*
+RUN \
+	apt-get update && apt-get -y upgrade && \
+	apt-get install -y \
+		bash-completion \
+		dialog \
+		nano \
+		stgit && \
+	apt-get autoremove --yes && apt-get clean --yes && \
+	rm -rf /var/lib/apt/lists/*
 
 # add user to enable bind mounts
 
