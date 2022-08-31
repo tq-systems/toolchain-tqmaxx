@@ -7,13 +7,27 @@
 ARG registry_base_url
 FROM ${registry_base_url}/ptxdist-base:ubuntu-18.04
 
+ARG ci_user_name
+ARG ci_user_uid
+ARG ci_user_gid
+
+ENV USER=${ci_user_name} USER_ID=${ci_user_uid} USER_GID=${ci_user_gid} JENKINS_GID=632 JENKINS_GROUP=jenkins
+
 # add user
 # to enable bind mounts on jenkins slaves
 # appropriate users must be added to every jenkins slave
+# TODO: remove jenkins dependency
 
-RUN mkdir /home/ptxdist_18; groupadd -g 10002 ptxdist_18; groupadd -g 632 jenkins; \
- 	useradd -r -u 10002 -g ptxdist_18 -G jenkins -d /home/ptxdist_18 ptxdist_18; \
-	chown ptxdist_18:ptxdist_18 /home/ptxdist_18;
+RUN \
+	groupadd --gid "${USER_GID}" "${USER}" && \
+	groupadd --gid "${JENKINS_GID}" "${JENKINS_GROUP}" && \
+	useradd \
+		--uid ${USER_ID} \
+		--gid ${USER_GID} \
+		--groups ${JENKINS_GROUP} \
+		--create-home \
+		--shell /bin/bash \
+		${USER}
 
 # install java (jenkins needs java8)
 
@@ -22,3 +36,5 @@ RUN \
 	apt-get install -y \
 		openjdk-8-jre && \
 	apt-get autoremove --yes && apt-get clean --yes
+
+USER "${USER}"
