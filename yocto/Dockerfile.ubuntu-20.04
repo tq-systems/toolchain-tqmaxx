@@ -7,18 +7,31 @@
 ARG registry_base_url
 FROM ${registry_base_url}/yocto-base:ubuntu-20.04
 
-RUN apt-get update && apt-get -y upgrade && apt-get install -y \
-	openjdk-11-jre \
-	lavacli \
-&& apt-get autoremove --yes && apt-get clean --yes
-RUN rm -rf /var/lib/apt/lists/*
+ARG ci_user_name
+ARG ci_user_uid
+ARG ci_user_gid
 
-# add users
+ENV USER=${ci_user_name} USER_ID=${ci_user_uid} USER_GID=${ci_user_gid}
+
+# add user
 # to enable bind mounts on jenkins slaves
 # appropriate users must be added to every jenkins slave
 
-RUN mkdir /home/yocto_hardknott; groupadd -g 10011 yocto_hardknott; \
-	useradd -r -u 10011 -g yocto_hardknott -d /home/yocto_hardknott yocto_hardknott; \
-	chown yocto_hardknott:yocto_hardknott /home/yocto_hardknott;
+RUN \
+	groupadd --gid "${USER_GID}" "${USER}" && \
+	useradd \
+		--uid ${USER_ID} \
+		--gid ${USER_GID} \
+		--create-home \
+		--shell /bin/bash \
+		${USER}
 
-USER yocto_hardknott
+RUN \
+	apt-get update && apt-get -y upgrade && \
+	apt-get install -y \
+		openjdk-11-jre \
+		lavacli && \
+	apt-get autoremove --yes && apt-get clean --yes && \
+	rm -rf /var/lib/apt/lists/*
+
+USER "${USER}"
