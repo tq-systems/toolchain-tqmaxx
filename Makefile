@@ -39,9 +39,6 @@ YOCTO_BASE_IMAGES = $(addprefix yocto-base-${DISTRO}-,${YOCTO_VERSIONS})
 YOCTO_DEVEL_IMAGES = $(addprefix yocto-devel-${DISTRO}-,${YOCTO_VERSIONS})
 YOCTO_IMAGES = $(addprefix yocto-${DISTRO}-,${YOCTO_VERSIONS})
 
-TQMA8_VERSIONS = 18.04 
-TQMA8_IMAGES = $(addprefix tqma8-${DISTRO}-,${TQMA8_VERSIONS})
-
 BARE_VERSIONS = 18.04
 BARE_BASE_IMAGES = $(addprefix bare-base-${DISTRO}-,${BARE_VERSIONS})
 BARE_DEVEL_IMAGES = $(addprefix bare-devel-${DISTRO}-,${BARE_VERSIONS})
@@ -57,8 +54,7 @@ ALL_IMAGES = \
 	${YOCTO_IMAGES} \
 	${BARE_BASE_IMAGES} \
 	${BARE_DEVEL_IMAGES} \
-	${BARE_IMAGES} \
-	${TQMA8_IMAGES}
+	${BARE_IMAGES}
 
 all:
 	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker-compose build ${BUILD_ARGS} ${ALL_IMAGES}
@@ -98,6 +94,5 @@ print:
 	@echo "PTX:	${PTX_BASE_IMAGES} ${PTX_IMAGES} ${PTX_DEVEL_IMAGES}"
 	@echo "YOCTO:	${YOCTO_BASE_IMAGES} ${YOCTO_IMAGES} ${YOCTO_DEVEL_IMAGES}"
 	@echo "BARE:	${BARE_BASE_IMAGES} ${BARE_IMAGES} ${BARE_DEVEL_IMAGES}"
-	@echo "TQMA8:	${TQMA8_IMAGES}"
 
 .PHONY: all new image run push pull print clean update

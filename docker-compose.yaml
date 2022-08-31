@@ -31,14 +31,6 @@ services:
       dockerfile: base/Dockerfile.ubuntu-20.04
     image: ${REGISTRY_BASE_URL}/base:ubuntu-20.04
 
-  tqma8-ubuntu-18.04:
-    build:
-      context: .
-      dockerfile: tqma8/Dockerfile.ubuntu-18.04
-    image: ${REGISTRY_BASE_URL}/tqma8:ubuntu-18.04
-    depends_on:
-      - base-ubuntu-18.04
-
   bare-base-ubuntu-18.04:
     build:
       context: .
