@@ -15,8 +15,10 @@ RUN mkdir /home/ptxdist_18; groupadd -g 10002 ptxdist_18; groupadd -g 632 jenkin
  	useradd -r -u 10002 -g ptxdist_18 -G jenkins -d /home/ptxdist_18 ptxdist_18; \
 	chown ptxdist_18:ptxdist_18 /home/ptxdist_18;
 
-# install java from launchpad (jenkins needs java8)
+# install java (jenkins needs java8)
 
-RUN apt-get update && apt-get -y upgrade && apt-get install -y \
-	openjdk-8-jre \
-&& apt-get autoremove --yes && apt-get clean --yes
+RUN \
+	apt-get update && apt-get -y upgrade && \
+	apt-get install -y \
+		openjdk-8-jre && \
+	apt-get autoremove --yes && apt-get clean --yes
