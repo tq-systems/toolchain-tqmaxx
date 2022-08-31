@@ -37,36 +37,43 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
 && apt-get autoremove --yes && apt-get clean --yes
 
 # Add used toolchains 
-RUN printf "deb [trusted=yes] http://debian.pengutronix.de/debian/ bionic main contrib non-free" >> /etc/apt/sources.list
-
-RUN apt-get update && apt-get -y upgrade && apt-get install -y \
-	oselas.toolchain-2016.06.1-arm-v5te-linux-gnueabi \
-	oselas.toolchain-2016.06.1-arm-v7a-linux-gnueabihf \
-	oselas.toolchain-2018.02.0-aarch64-v8a-linux-gnu \
-	oselas.toolchain-2018.02.0-arm-v7a-linux-gnueabihf \
-	oselas.toolchain-2018.12.0-arm-v5te-linux-gnueabi \
-	oselas.toolchain-2018.12.0-aarch64-v8a-linux-gnu \
-	oselas.toolchain-2018.12.0-arm-v5te-linux-gnueabi \
-	oselas.toolchain-2018.12.0-arm-v7a-linux-gnueabihf \
-	oselas.toolchain-2019.09.0-aarch64-v8a-linux-gnu \
-	oselas.toolchain-2019.09.0-arm-v7a-linux-gnueabihf \
-	oselas.toolchain-2019.09.0-arm-v5te-linux-gnueabi \
-	oselas.toolchain-2019.09.1-aarch64-v8a-linux-gnu \
-	oselas.toolchain-2019.09.1-arm-v7a-linux-gnueabihf \
-	oselas.toolchain-2019.09.1-arm-v5te-linux-gnueabi \
-&& apt-get autoremove --yes && apt-get clean --yes
+RUN \
+	printf "deb [trusted=yes] http://debian.pengutronix.de/debian/ bionic main contrib non-free" >> /etc/apt/sources.list && \
+	apt-get update && apt-get -y upgrade && \
+	apt-get install -y \
+		oselas.toolchain-2016.06.1-arm-v5te-linux-gnueabi \
+		oselas.toolchain-2016.06.1-arm-v7a-linux-gnueabihf \
+		oselas.toolchain-2018.02.0-aarch64-v8a-linux-gnu \
+		oselas.toolchain-2018.02.0-arm-v7a-linux-gnueabihf \
+		oselas.toolchain-2018.12.0-arm-v5te-linux-gnueabi \
+		oselas.toolchain-2018.12.0-aarch64-v8a-linux-gnu \
+		oselas.toolchain-2018.12.0-arm-v5te-linux-gnueabi \
+		oselas.toolchain-2018.12.0-arm-v7a-linux-gnueabihf \
+		oselas.toolchain-2019.09.0-aarch64-v8a-linux-gnu \
+		oselas.toolchain-2019.09.0-arm-v7a-linux-gnueabihf \
+		oselas.toolchain-2019.09.0-arm-v5te-linux-gnueabi \
+		oselas.toolchain-2019.09.1-aarch64-v8a-linux-gnu \
+		oselas.toolchain-2019.09.1-arm-v7a-linux-gnueabihf \
+		oselas.toolchain-2019.09.1-arm-v5te-linux-gnueabi  && \
+	apt-get autoremove --yes && apt-get clean --yes
 
 # install ptxdist in all versions
 ADD ptxdist/ptxdistrc.default /root/ptxdistrc.default
 
-RUN for year in 2017 2018 2019 2020 ; do \
+RUN \
+	for year in 2017 2018 2019 2020 ; do \
 		for nr in 01 02 03 04 05 06 07 08 09 10 11 12 ; do \
-			cd /root; \
-			echo ${year}.${nr}; wget https://public.pengutronix.de/software/ptxdist/ptxdist-${year}.${nr}.0.tar.bz2; \
-			tar -jxf ptxdist-${year}.${nr}.0.tar.bz2 --directory /root; \
-			cp /root/ptxdistrc.default /root/ptxdist-${year}.${nr}.0/config/setup/ptxdistrc.default ; \
-			cd /root/ptxdist-${year}.${nr}.0; ./configure; make ; make install; cd /root; \
-			rm -f ptxdist-${year}.${nr}.0.tar.bz2; \
+			cd /root && \
+			echo ${year}.${nr} && \
+			wget https://public.pengutronix.de/software/ptxdist/ptxdist-${year}.${nr}.0.tar.bz2 && \
+			tar -jxf ptxdist-${year}.${nr}.0.tar.bz2 --directory /root && \
+			cp /root/ptxdistrc.default /root/ptxdist-${year}.${nr}.0/config/setup/ptxdistrc.default && \
+			cd /root/ptxdist-${year}.${nr}.0 && \
+			./configure && \
+			make && \
+			make install && \
+			cd /root && \
+			rm -f ptxdist-${year}.${nr}.0.tar.bz2 && \
 			rm -rf ptxdist-${year}.${nr}.0; \
 		done \
 	done

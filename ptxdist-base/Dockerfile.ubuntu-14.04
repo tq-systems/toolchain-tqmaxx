@@ -32,13 +32,19 @@ COPY ptxdist/ptxdistrc.default /root/ptxdistrc.default
 # Install set of ptxdist versions in use for old BSP
 # get it from download server, unpack, configure build an install and finally
 # clean temporary folders and archives
-RUN for version in 2013.03 2013.12 2015.05 2016.04 ; do \
-	cd /root; \
-		echo ${version}; wget https://public.pengutronix.de/software/ptxdist/ptxdist-${version}.0.tar.bz2; \
-		tar -jxf ptxdist-${version}.0.tar.bz2 --directory /root; \
-		cp /root/ptxdistrc.default /root/ptxdist-${version}.0/config/setup/ptxdistrc.default ; \
-		cd /root/ptxdist-${version}.0; ./configure; make ; make install; cd /root; \
-		rm -f ptxdist-${version}.0.tar.bz2; \
+RUN \
+	for version in 2013.03 2013.12 2015.05 2016.04 ; do \
+		cd /root && \
+		echo ${version} && \
+		wget https://public.pengutronix.de/software/ptxdist/ptxdist-${version}.0.tar.bz2 && \
+		tar -jxf ptxdist-${version}.0.tar.bz2 --directory /root && \
+		cp /root/ptxdistrc.default /root/ptxdist-${version}.0/config/setup/ptxdistrc.default && \
+		cd /root/ptxdist-${version}.0 && \
+		./configure && \
+		make && \
+		make install && \
+		cd /root && \
+		rm -f ptxdist-${version}.0.tar.bz2 && \
 		rm -rf ptxdist-${version}.0; \
 	done
 
@@ -52,6 +58,9 @@ RUN cd /root && for toolchain in \
 		https://debian.pengutronix.de/debian/pool/main/o/oselas.toolchain/oselas.toolchain-2014.12.2-arm-v7a-linux-gnueabihf-gcc-4.9.2-glibc-2.20-binutils-2.24-kernel-3.16-sanitized_2014.12.2_amd64.deb \
 		https://debian.pengutronix.de/debian/pool/main/o/oselas.toolchain/oselas.toolchain-2014.12.2-arm-v5te-linux-gnueabi-gcc-4.9.2-glibc-2.20-binutils-2.24-kernel-3.16-sanitized_2014.12.2_amd64.deb \
 		https://debian.pengutronix.de/debian/pool/main/o/oselas.toolchain/oselas.toolchain-2016.06.1-arm-v5te-linux-gnueabi-gcc-5.4.0-glibc-2.23-binutils-2.26-kernel-4.6-sanitized_2016.06.1_amd64.deb \
-	; do echo ${toolchain}; wget ${toolchain}; done && \
-	dpkg -i *.deb; \
-	rm -f *.deb;
+	; do \
+		echo ${toolchain} && \
+		wget ${toolchain}; \
+	done && \
+	dpkg -i *.deb && \
+	rm -f *.deb
