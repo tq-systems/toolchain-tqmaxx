@@ -188,6 +188,12 @@ needed for pusing, pulling and updating the images
 | yocto-ubuntu-16.04                 | yocto:ubuntu-14.04         | yocto support for Ubuntu 14.04, jenkins support   |
 | yocto-ubuntu-18.04                 | yocto:ubuntu-16.04         | yocto support for Ubuntu 16.04, jenkins support   |
 | yocto-ubuntu-20.04                 | yocto:ubuntu-20.04         | yocto support for Ubuntu 20.04, jenkins support   |
+| ---------------------------------- | -------------------------- | ------------------------------------------------- |
+| bare-base-ubuntu-18.04             | bare-base:ubuntu-18.04     | toolchains only (Ubuntu 18.04)                    |
+| ---------------------------------- | -------------------------- | ------------------------------------------------- |
+| bare-devel-ubuntu-18.04            | bare-devel:ubuntu-18.04    | toolchains only (Ubuntu 18.04), local user        |
+| ---------------------------------- | -------------------------- | ------------------------------------------------- |
+| bare-ubuntu-18.04                  | bare:ubuntu-18.04          | toolchains only (Ubuntu 18.04), gitlab-ci support |
 
 ## Customizing images and containers
 
