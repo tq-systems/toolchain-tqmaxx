@@ -40,6 +40,8 @@ The following things are used in this repo and throughout this README:
 - Usage of a `docker-compose.yaml` file and the `docker-compose` tool to declare
   dependencies between docker images (called services in docker-compose)
 - The changelog is created with [changie](https://changie.dev/guide/installation/)
+- A default user is added via docker build args,
+  defaults are set in Makefile (name=sysiphos, uid=1010, gid=1010)
 
 ## Usage
 
@@ -56,6 +58,28 @@ To work with an own container registry the URL has to be supplied via the enviro
 $export REGISTRY_BASE_URL=${MY_REGISTRY_BASE_URL}
 ```
 
+### Default user
+
+The bare, ptxdist and yocto containers define a default user using the ARG statement. In the Makefile, ci_user_name, ci_user_uid, ci_user_gid are set to default values (name=sysiphos, uid=1010, gid=1010). 
+
+Call docker-compose with build-arg to change the default user:
+
+```
+--build-arg ci_user_name=<name>
+--build-arg ci_user_uid=<uid>
+--build-arg ci_user_gid=<gid>
+```
+
+When using the Makefile approach set the Environment variables:
+
+```bash
+$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ export CI_USER_NAME=<name>
+$ export CI_USER_UID=<uid>
+$ export CI_USER_GID=<gid>
+$ make all
+```
+
 ### Build image
 Use *docker-compose* to build an image:
 
@@ -64,6 +88,8 @@ $ export REGISTRY_BASE_URL=<registry server/path on server>
 $ IMAGE=<service name from docker-compose.yaml>
 $ docker-compose build --build-arg registry_base_url=${REGISTRY_BASE_URL} ${IMAGE}
 ```
+
+The [Default user](#default-user) could be changed for bare, ptxdist and yocto images.
 
 ### Deploy images
 
@@ -130,6 +156,8 @@ $ export REGISTRY_BASE_URL=<registry server/path on server>
 $ make all
 ```
 
+The [Default user](#default-user) could be changed for bare, ptxdist and yocto images.
+
 ### Rebuild all images from scratch
 
 ```bash
@@ -137,12 +165,17 @@ $ export REGISTRY_BASE_URL=<registry server/path on server>
 $ make new
 ```
 
+The [Default user](#default-user) could be changed for bare, ptxdist and yocto images.
+
 ### Build a single image
 
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
-$ IMAGE=<service name from docker-comose.yaml> make image
+$ IMAGE=<service name from docker-compose.yaml>
+$ make image IMAGE=${IMAGE}
 ```
+
+The [Default user](#default-user) could be changed for bare, ptxdist and yocto images.
 
 ### Run shell inside container
 
@@ -150,14 +183,14 @@ See [Container for local development](#container-for-local-development)).
 
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
-$ IMAGE=<service name from docker-comose.yaml> make run
+$ IMAGE=<service name from docker-compose.yaml> make run
 ```
 
 ### Other commands
 
 The Makefile also provides the targets `push`, `pull`, `update`, `clean`
 and `print` that affect all images. Nevertheless, login to the registry is
-needed for pusing, pulling and updating the images
+needed for pushing, pulling and updating the images
 
 ## Supported images
 
@@ -237,9 +270,16 @@ $ docker-compose run --volume=${HOME}/devel:/devel <service name from docker-com
 ```
 
 One can add custom command line arguments for the `docker-compose run`
-command to the `run` target in the Makefile. This way, the `run` target can
-be used as a shorthand and volumes are mounted on every container that is
-started with the `run` target.
+command to the `run` target in the Makefile via the `RUN_ARGS` env variable.
+This way, the `run` target can be used as a shorthand and volumes are mounted
+on every container that is started with the `run` target.
+
+```bash
+$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ RUN_ARGS="--volume=${HOME}/devel:/devel
+$ IMAGE=<service name from docker-compose.yaml>
+$ make run IMAGE=${IMAGE} RUN_ARGS="${RUN_ARGS}"
+```
 
 ### Container for local development
 
@@ -258,8 +298,9 @@ The following example shows, how to use this:
 
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
-$ IMAGE=<service name from docker-comose.yaml>
-$ docker-compose run --name <name> --rm -e HOST_USER_ID=$(id -u) -e HOST_USER_GID=$(id -g) --volume ${HOME}/devel:/devel ${IMAGE}
+$ IMAGE=<service name from docker-compose.yaml>
+$ RUN_ARGS="--name <name> --rm -e HOST_USER_ID=$(id -u) -e HOST_USER_GID=$(id -g) --volume ${HOME}/devel:/devel"
+$ make run RUN_ARGS="${RUN_ARGS}" IMAGE="${IMAGE}"
 # now inside container
 $ cd /devel/u-boot
 $ export CROSS_COMPILE=<path to gcc>/<gcc base name>
