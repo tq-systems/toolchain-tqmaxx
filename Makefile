@@ -25,6 +25,10 @@ BUILD_ARGS = \
 	--build-arg ci_user_uid=${CI_USER_UID} \
 	--build-arg ci_user_gid=${CI_USER_GID}
 
+RUN_ARGS ?= --rm
+
+IMAGE ?= bare-devel-ubuntu-18.04
+
 DISTRO = ubuntu
 DISTRO_VERSIONS = 14.04 16.04 18.04 20.04
 BASE_IMAGES = $(addprefix base-${DISTRO}-,${DISTRO_VERSIONS})
@@ -65,18 +69,12 @@ new:
 image:
 	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker-compose build ${BUILD_ARGS} ${IMAGE}
 
+# Example from README.md with custom options devel templates:
+# export RUN_ARGS="--rm -e HOST_USER_ID=$(id -u) -e HOST_USER_GID=$(id -g) --volume ${HOME}/devel:/devel"
+# docker-compose run ${RUN_ARGS} ${IMAGE}
 run:
 	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && \
-	docker-compose run --rm  ${IMAGE}
-
-	# Example from README.md with custom options for ptxdist and yocto
-	# devel templates:
-	#
-	# docker-compose run --rm  \
-	# 	-e HOST_USER_ID=$(shell id -u) \
-	# 	-e HOST_USER_GID=$(shell id -g) \
-	# 	--volume ${HOME}/devel:/devel \
-	# 	${IMAGE}
+	docker-compose run ${RUN_ARGS} ${IMAGE}
 
 push:
 	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker-compose push
