@@ -22,6 +22,7 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
 	build-essential \
 	file \
 	gawk \
+	locales \
 	texinfo \
 	unzip \
 	wget \
@@ -29,7 +30,13 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
 && apt-get autoremove --yes && apt-get clean --yes
 RUN rm -rf /var/lib/apt/lists/*
 
-RUN locale-gen && \
-update-locale LANG=C.UTF-8 LANGUAGE=C.UTF-8 LC_ALL=C.UTF-8
+RUN locale-gen --lang en_US.UTF-8 && \
+	update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
+# update-locale creates /etc/default/locale (used by "su" command or user remapping)
+# docker doesn't use etc/default/locale if container uses USER statement for non root user
+# therefore ENV has to be be used to set locale variables for derived docker containers
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
 
 ADD base/gitconfig /etc/gitconfig
