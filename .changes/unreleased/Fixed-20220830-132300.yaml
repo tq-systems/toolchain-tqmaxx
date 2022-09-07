@@ -1,3 +1,0 @@
-kind: Fixed
-body: "base/Dockerfile.ubuntu-14.04: fix locale generation"
-time: 2022-08-30T13:23:00.777526066+02:00
