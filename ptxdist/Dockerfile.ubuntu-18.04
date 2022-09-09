@@ -16,8 +16,10 @@ ENV USER=${ci_user_name} USER_ID=${ci_user_uid} USER_GID=${ci_user_gid} JENKINS_
 # add user
 # to enable bind mounts on jenkins slaves
 # appropriate users must be added to every jenkins slave
+#
+# when using git as patchtool in ptxdist we need 'git init' to have valid
+# data in ~/.gitconfig.
 # TODO: remove jenkins dependency
-
 RUN \
 	groupadd --gid "${USER_GID}" "${USER}" && \
 	groupadd --gid "${JENKINS_GID}" "${JENKINS_GROUP}" && \
@@ -27,7 +29,9 @@ RUN \
 		--groups ${JENKINS_GROUP} \
 		--create-home \
 		--shell /bin/bash \
-		${USER}
+		${USER} && \
+    git config --file=/home/${USER}/.gitconfig --add user.email "${USER}@autobuild.org" && \
+    git config --file=/home/${USER}/.gitconfig --add user.name "${USER}"
 
 # install java (jenkins needs java8)
 
