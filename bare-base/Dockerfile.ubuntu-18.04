@@ -21,6 +21,7 @@ RUN \
 		pengutronix-archive-keyring \
 		tree \
 		xz-utils \
+		xxd \
 		zip \
 		zlib1g-dev && \
 	apt-get autoremove --yes && apt-get clean --yes && \
