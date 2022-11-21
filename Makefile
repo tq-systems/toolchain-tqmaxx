@@ -17,13 +17,17 @@ CI_USER_NAME ?= sysiphos
 CI_USER_UID ?= 1010
 CI_USER_GID ?= 1010
 
-# When needed to add proxy settings to BUILD_ARGS:
+# used java version in container
+CI_JAVA_VERSION ?= openjdk-11-jre
+
+# When needed to add the defined variables to BUILD_ARGS:
 # --build-arg http_proxy=${PROXY} --build-arg https_proxy=${PROXY}
 BUILD_ARGS = \
 	--build-arg registry_base_url=${REGISTRY_BASE_URL} \
 	--build-arg ci_user_name=${CI_USER_NAME} \
 	--build-arg ci_user_uid=${CI_USER_UID} \
-	--build-arg ci_user_gid=${CI_USER_GID}
+	--build-arg ci_user_gid=${CI_USER_GID} \
+	--build-arg ci_java_version=${CI_JAVA_VERSION}
 
 RUN_ARGS ?= --rm
 
