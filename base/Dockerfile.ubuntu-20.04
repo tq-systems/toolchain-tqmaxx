@@ -19,7 +19,6 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
 	build-essential \
 	file \
 	gawk \
-	git \
 	locales \
 	texinfo \
 	unzip \
@@ -40,3 +39,12 @@ ENV LANGUAGE en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 ADD base/gitconfig /etc/gitconfig
+
+# install up to date git version
+RUN \
+	echo "deb [trusted=yes] https://ppa.launchpadcontent.net/git-core/ppa/ubuntu focal main" >> /etc/apt/sources.list && \
+	apt-get update && apt-get -y upgrade && \
+	apt-get install -y \
+		git && \
+	apt-get autoremove --yes && apt-get clean --yes && \
+	rm -rf /var/lib/apt/lists/*

@@ -14,7 +14,6 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
 	diffstat \
 	gcc \
 	gcc-multilib \
-	git-core \
 	iputils-ping \
 	libegl1-mesa \
 	libsdl1.2-dev \
