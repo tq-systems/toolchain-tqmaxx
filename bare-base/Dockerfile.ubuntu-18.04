@@ -19,6 +19,7 @@ RUN \
 		oselas.toolchain-2020.08-arm-v7a-linux-gnueabihf \
 		oselas.toolchain-2020.08-powerpc-603e-linux-gnu \
 		pengutronix-archive-keyring \
+		python3 \
 		tree \
 		xz-utils \
 		xxd \

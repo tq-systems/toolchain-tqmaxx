@@ -26,13 +26,6 @@ RUN \
 		--shell /bin/bash \
 		${USER}
 
-RUN \
-	apt-get update && apt-get -y upgrade && \
-	apt-get install -y \
-		python3 && \
-	apt-get autoremove --yes && apt-get clean --yes && \
-	rm -rf /var/lib/apt/lists/*
-
 COPY bare/* /home/${USER}/
 
 RUN git clone --depth=1 --branch v2021.10 https://source.denx.de/u-boot/u-boot.git /home/${USER}/u-boot
