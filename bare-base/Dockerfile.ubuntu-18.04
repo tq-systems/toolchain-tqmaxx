@@ -15,6 +15,7 @@ RUN \
 		device-tree-compiler \
 		flex \
 		libssl-dev \
+		lzop \
 		oselas.toolchain-2020.08-aarch64-v8a-linux-gnu \
 		oselas.toolchain-2020.08-arm-v7a-linux-gnueabihf \
 		oselas.toolchain-2020.08-powerpc-603e-linux-gnu \
@@ -27,7 +28,8 @@ RUN \
 		xz-utils \
 		xxd \
 		zip \
-		zlib1g-dev && \
+		zlib1g-dev \
+		zstd && \
 	apt-get autoremove --yes && apt-get clean --yes && \
 	rm -rf /var/lib/apt/lists/*
 
