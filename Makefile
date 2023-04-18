@@ -1,7 +1,7 @@
 ################################################################################
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2021 - 2022 TQ-Systems GmbH <license@tq-group.com>
-# author: Martin Schmiedel <martin.schmiedel@tq-group.com>
+# Copyright (c) 2021-2023 TQ-Systems GmbH <oss@ew.tq-group.com>
+# author: Martin Schmiedel
 ################################################################################
 
 # per default this is the docker bridge device
