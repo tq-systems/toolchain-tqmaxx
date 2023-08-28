@@ -6,8 +6,11 @@
 
 FROM amd64/ubuntu:16.04
 
-# set environment
+ARG ci_glab_version
+
+# set environmet
 ENV DEBIAN_FRONTEND=noninteractive
+ENV GLAB_VERSION=${ci_glab_version}
 
 #
 # see README in directory
@@ -20,6 +23,7 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
 	file \
 	gawk \
 	git \
+	jq \
 	locales \
 	texinfo \
 	unzip \
@@ -40,3 +44,10 @@ ENV LANGUAGE en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 ADD base/gitconfig /etc/gitconfig
+
+# install gitlab cli
+RUN \
+	wget https://gitlab.com/gitlab-org/cli/-/releases/v${GLAB_VERSION}/downloads/glab_${GLAB_VERSION}_Linux_x86_64.tar.gz && \
+	tar -zxf glab_${GLAB_VERSION}_Linux_x86_64.tar.gz bin/glab --directory /usr/local/bin && \
+	rm glab_${GLAB_VERSION}_Linux_x86_64.tar.gz
+
