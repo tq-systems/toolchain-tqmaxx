@@ -28,6 +28,6 @@ RUN \
 
 COPY bare/* /home/${USER}/
 
-RUN git clone --depth=1 --branch v2021.10 https://source.denx.de/u-boot/u-boot.git /home/${USER}/u-boot
+RUN git clone --depth=1 --branch TQM-v2021.10 https://github.com/tq-systems/u-boot-tqmaxx.git /home/${USER}/u-boot
 
 USER "${USER}"
