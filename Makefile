@@ -21,7 +21,7 @@ CI_USER_GID ?= 1010
 CI_JAVA_VERSION ?= openjdk-11-jre
 
 # used gitlab cli version in container
-CI_GLAB_VERSION ?= 1.32.0
+CI_GLAB_VERSION ?= 1.36.0
 
 # When needed to add the defined variables to BUILD_ARGS:
 # --build-arg http_proxy=${PROXY} --build-arg https_proxy=${PROXY}
