@@ -15,6 +15,7 @@ RUN \
 		cmake \
 		device-tree-compiler \
 		flex \
+		git-lfs \
 		libgnutls28-dev \
 		libssl-dev \
 		lzop \
