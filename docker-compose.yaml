@@ -31,6 +31,12 @@ services:
       dockerfile: base/Dockerfile.ubuntu-20.04
     image: ${REGISTRY_BASE_URL}/base:ubuntu-20.04
 
+  base-ubuntu-22.04:
+    build:
+      context: .
+      dockerfile: base/Dockerfile.ubuntu-22.04
+    image: ${REGISTRY_BASE_URL}/base:ubuntu-22.04
+
   bare-base-ubuntu-18.04:
     build:
       context: .
@@ -79,6 +85,14 @@ services:
     depends_on:
       - base-ubuntu-20.04
 
+  yocto-base-ubuntu-22.04:
+    build:
+        context: .
+        dockerfile: yocto-base/Dockerfile.ubuntu-22.04
+    image: ${REGISTRY_BASE_URL}/yocto-base:ubuntu-22.04
+    depends_on:
+      - base-ubuntu-22.04
+
   yocto-ubuntu-16.04:
     build:
       context: .
@@ -103,6 +117,14 @@ services:
     depends_on:
       - yocto-base-ubuntu-20.04
 
+  yocto-ubuntu-22.04:
+    build:
+        context: .
+        dockerfile: yocto/Dockerfile.ubuntu-22.04
+    image: ${REGISTRY_BASE_URL}/yocto:ubuntu-22.04
+    depends_on:
+      - yocto-base-ubuntu-22.04
+
   yocto-devel-ubuntu-16.04:
     build:
       context: .
@@ -126,6 +148,14 @@ services:
     image: ${REGISTRY_BASE_URL}/yocto-devel:ubuntu-20.04
     depends_on:
       - yocto-base-ubuntu-20.04
+
+  yocto-devel-ubuntu-22.04:
+    build:
+        context: .
+        dockerfile: yocto-devel/Dockerfile.ubuntu-22.04
+    image: ${REGISTRY_BASE_URL}/yocto-devel:ubuntu-22.04
+    depends_on:
+      - yocto-base-ubuntu-22.04
 
   ptxdist-base-ubuntu-14.04:
     build:

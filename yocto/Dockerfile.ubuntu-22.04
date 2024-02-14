@@ -1,0 +1,43 @@
+################################################################################
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024 TQ-Systems GmbH <oss@ew.tq-group.com>
+# author: Martin Schmiedel
+################################################################################
+
+ARG registry_base_url
+FROM ${registry_base_url}/yocto-base:ubuntu-22.04
+
+ARG ci_user_name
+ARG ci_user_uid
+ARG ci_user_gid
+ARG ci_java_version
+
+ENV USER=${ci_user_name} USER_ID=${ci_user_uid} USER_GID=${ci_user_gid}\
+	JAVA_VERSION=${ci_java_version}
+
+# add user
+# to enable bind mounts on jenkins slaves
+# appropriate users must be added to every jenkins slave
+
+RUN \
+	groupadd --gid "${USER_GID}" "${USER}" && \
+	useradd \
+		--uid ${USER_ID} \
+		--gid ${USER_GID} \
+		--create-home \
+		--shell /bin/bash \
+		${USER}
+
+RUN \
+	apt-get update && apt-get -y upgrade && \
+	apt-get install -y \
+		${JAVA_VERSION} \
+		lavacli && \
+	apt-get autoremove --yes && apt-get clean --yes && \
+	rm -rf /var/lib/apt/lists/*
+
+RUN git clone --depth=1 --branch 3.1 https://github.com/siemens/kas.git && \
+		python3 -m pip install ./kas && \
+		rm -rf ./kas
+
+USER "${USER}"
