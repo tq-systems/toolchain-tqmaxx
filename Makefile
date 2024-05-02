@@ -51,7 +51,7 @@ YOCTO_BASE_IMAGES = $(addprefix yocto-base-${DISTRO}-,${YOCTO_VERSIONS})
 YOCTO_DEVEL_IMAGES = $(addprefix yocto-devel-${DISTRO}-,${YOCTO_VERSIONS})
 YOCTO_IMAGES = $(addprefix yocto-${DISTRO}-,${YOCTO_VERSIONS})
 
-BARE_VERSIONS = 18.04
+BARE_VERSIONS = 18.04 22.04
 BARE_BASE_IMAGES = $(addprefix bare-base-${DISTRO}-,${BARE_VERSIONS})
 BARE_DEVEL_IMAGES = $(addprefix bare-devel-${DISTRO}-,${BARE_VERSIONS})
 BARE_IMAGES = $(addprefix bare-${DISTRO}-,${BARE_VERSIONS})
