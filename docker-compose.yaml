@@ -1,6 +1,6 @@
 ################################################################################
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2021-2023 TQ-Systems GmbH <oss@ew.tq-group.com>
+# Copyright (c) 2021-2024 TQ-Systems GmbH <oss@ew.tq-group.com>
 # author: Martin Schmiedel
 ################################################################################
 
@@ -204,3 +204,11 @@ services:
     image: ${REGISTRY_BASE_URL}/ptxdist-devel:ubuntu-18.04
     depends_on:
       - ptxdist-base-ubuntu-18.04
+
+  ccs-base-ubuntu-20.04:
+    build:
+      context: .
+      dockerfile: ccs-base/Dockerfile.ubuntu-20.04
+    image: ${REGISTRY_BASE_URL}/ccs-base:ubuntu-20.04
+    depends_on:
+      - base-ubuntu-20.04

@@ -1,0 +1,99 @@
+################################################################################
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024 TQ-Systems GmbH <oss@ew.tq-group.com>
+# author: Martin Schmiedel
+################################################################################
+
+ARG registry_base_url
+FROM ${registry_base_url}/base:ubuntu-20.04
+
+#Install all packages needed
+#https://software-dl.ti.com/ccs/esd/documents/ccsv12_linux_host_support.html
+
+RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
+  at-spi2-core                  \
+  binutils                      \
+  build-essential               \
+  ca-certificates               \
+  curl                          \
+  libasound2                    \
+  libc6-i386                    \
+  libcanberra-gtk-module        \
+  libdbus-glib-1-2              \
+  libgconf-2-4                  \
+  libncurses5                   \
+  libpython2.7                  \
+  libstdc++6					          \
+  libswt-gtk-4-java             \
+  libswt-gtk-4-jni              \
+  libtinfo5                     \
+  libusb-0.1-4                  \
+  libxt6						            \
+  libxtst6                      \
+  python2.7                     \
+  python3-pip                   \
+  software-properties-common    \
+  unzip         				        \
+  wget                          \
+  xz-utils                      \
+&& apt-get autoremove --yes && apt-get clean --yes
+RUN rm -rf /var/lib/apt/lists/*
+
+ARG ci_user_name
+ARG ci_user_uid
+ARG ci_user_gid
+ARG ci_java_version
+
+ENV USER=${ci_user_name} USER_ID=${ci_user_uid} USER_GID=${ci_user_gid}\
+	JAVA_VERSION=${ci_java_version}
+
+# add user
+# to enable bind mounts on build server
+# appropriate users must be added to every build server
+
+RUN \
+	groupadd --gid "${USER_GID}" "${USER}" && \
+	useradd \
+		--uid ${USER_ID} \
+		--gid ${USER_GID} \
+		--create-home \
+		--shell /bin/bash \
+		${USER}
+
+# install tools (must be done as user)
+WORKDIR /home/${USER}/ccs_install
+RUN chown ${USER} /home/${USER}/ccs_install
+USER "${USER}"
+
+# download and install tools
+RUN wget https://dr-download.ti.com/software-development/ide-configuration-compiler-or-debugger/MD-J1VdearkvK/12.5.0/CCS12.5.0.00007_linux-x64.tar.gz
+RUN tar -zxvf CCS12.5.0.00007_linux-x64.tar.gz --strip-components=1
+RUN ./ccs_setup_12.5.0.00007.run --mode unattended --prefix ~/ti
+
+RUN wget https://dr-download.ti.com/software-development/software-development-kit-sdk/MD-SfkcjYAjGS/09.01.00.41/mcu_plus_sdk_am64x_09_01_00_41-linux-x64-installer.run
+RUN chmod +x mcu_plus_sdk_am64x_09_01_00_41-linux-x64-installer.run
+RUN ./mcu_plus_sdk_am64x_09_01_00_41-linux-x64-installer.run --mode unattended --prefix ~/ti
+
+RUN wget https://dr-download.ti.com/software-development/ide-configuration-compiler-or-debugger/MD-ayxs93eZNN/3.2.0.LTS/ti_cgt_armllvm_3.2.0.LTS_linux-x64_installer.bin
+RUN chmod +x ti_cgt_armllvm_3.2.0.LTS_linux-x64_installer.bin
+RUN ./ti_cgt_armllvm_3.2.0.LTS_linux-x64_installer.bin --mode unattended --prefix ~/ti
+
+RUN wget https://dr-download.ti.com/software-development/ide-configuration-compiler-or-debugger/MD-nsUM6f7Vvb/1.18.0.3266/sysconfig-1.18.0_3266-setup.run
+RUN chmod +x sysconfig-1.18.0_3266-setup.run
+RUN ./sysconfig-1.18.0_3266-setup.run --mode unattended --prefix ~/ti/sysconfig_1.18.0
+    
+RUN wget https://developer.arm.com/-/media/Files/downloads/gnu-a/9.2-2019.12/binrel/gcc-arm-9.2-2019.12-x86_64-aarch64-none-elf.tar.xz
+RUN tar xvf gcc-arm-9.2-2019.12-x86_64-aarch64-none-elf.tar.xz -C ~/ti
+
+RUN wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/7-2017q4/gcc-arm-none-eabi-7-2017-q4-major-linux.tar.bz2
+RUN tar xvjf gcc-arm-none-eabi-7-2017-q4-major-linux.tar.bz2 -C ~/ti
+
+# patch the toolchain
+COPY --chown=${USER} ccs-base/patch/* /home/${USER}/ti/mcu_plus_sdk_am64x_09_01_00_41/
+
+RUN cd ~/ti/mcu_plus_sdk_am64x_09_01_00_41 \
+    && make -s libs PROFILE=debug \
+    && make -s libs PROFILE=release
+
+# add ccs to path
+ENV PATH="/home/${USER}/ti/ccs/eclipse:${PATH}"

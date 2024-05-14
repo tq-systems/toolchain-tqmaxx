@@ -56,6 +56,9 @@ BARE_BASE_IMAGES = $(addprefix bare-base-${DISTRO}-,${BARE_VERSIONS})
 BARE_DEVEL_IMAGES = $(addprefix bare-devel-${DISTRO}-,${BARE_VERSIONS})
 BARE_IMAGES = $(addprefix bare-${DISTRO}-,${BARE_VERSIONS})
 
+CCS_VERSIONS = 20.04
+CCS_BASE_IMAGES = $(addprefix ccs-base-${DISTRO}-,${CCS_VERSIONS})
+
 ALL_IMAGES = \
 	${BASE_IMAGES} \
 	${PTX_BASE_IMAGES} \
@@ -66,7 +69,8 @@ ALL_IMAGES = \
 	${YOCTO_IMAGES} \
 	${BARE_BASE_IMAGES} \
 	${BARE_DEVEL_IMAGES} \
-	${BARE_IMAGES}
+	${BARE_IMAGES} \
+	${CCS_BASE_IMAGES}
 
 all:
 	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker-compose build ${BUILD_ARGS} ${ALL_IMAGES}
