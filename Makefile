@@ -38,7 +38,7 @@ RUN_ARGS ?= --rm
 IMAGE ?= bare-devel-ubuntu-18.04
 
 DISTRO = ubuntu
-DISTRO_VERSIONS = 14.04 16.04 18.04 20.04
+DISTRO_VERSIONS = 14.04 16.04 18.04 20.04 22.04
 BASE_IMAGES = $(addprefix base-${DISTRO}-,${DISTRO_VERSIONS})
 
 PTX_VERSIONS = 14.04 18.04
@@ -46,7 +46,7 @@ PTX_BASE_IMAGES = $(addprefix ptxdist-base-${DISTRO}-,${PTX_VERSIONS})
 PTX_DEVEL_IMAGES = $(addprefix ptxdist-devel-${DISTRO}-,${PTX_VERSIONS})
 PTX_IMAGES = $(addprefix ptxdist-${DISTRO}-,${PTX_VERSIONS})
 
-YOCTO_VERSIONS = 16.04 18.04 20.04
+YOCTO_VERSIONS = 16.04 18.04 20.04 22.04
 YOCTO_BASE_IMAGES = $(addprefix yocto-base-${DISTRO}-,${YOCTO_VERSIONS})
 YOCTO_DEVEL_IMAGES = $(addprefix yocto-devel-${DISTRO}-,${YOCTO_VERSIONS})
 YOCTO_IMAGES = $(addprefix yocto-${DISTRO}-,${YOCTO_VERSIONS})
