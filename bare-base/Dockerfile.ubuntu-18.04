@@ -22,6 +22,9 @@ RUN \
 		oselas.toolchain-2020.08-aarch64-v8a-linux-gnu \
 		oselas.toolchain-2020.08-arm-v7a-linux-gnueabihf \
 		oselas.toolchain-2020.08-powerpc-603e-linux-gnu \
+		oselas.toolchain-2023.07.1-aarch64-v8a-linux-gnu \
+		oselas.toolchain-2023.07.1-arm-v7a-linux-gnueabihf \
+		oselas.toolchain-2023.07.1-powerpc-603e-linux-gnu \
 		pengutronix-archive-keyring \
 		python3 \
 		python3-dev \
@@ -62,3 +65,18 @@ RUN \
 	wget https://github.com/Kitware/CMake/releases/download/v3.27.4/cmake-3.27.4-linux-x86_64.tar.gz && \
 	tar --gzip -xf cmake-3.27.4-linux-x86_64.tar.gz --directory /opt && \
 	rm cmake-3.27.4-linux-x86_64.tar.gz
+
+RUN \
+	wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 && \
+	tar -jxf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 --directory /opt && \
+	rm gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+
+RUN \
+	wget https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz && \
+	tar --xz -xf arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz --directory /opt && \
+	rm arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz
+	
+RUN \
+	wget https://github.com/Kitware/CMake/releases/download/v3.29.2/cmake-3.29.2-linux-x86_64.tar.gz && \
+	tar --gzip -xf cmake-3.29.2-linux-x86_64.tar.gz --directory /opt && \
+	rm cmake-3.29.2-linux-x86_64.tar.gz
