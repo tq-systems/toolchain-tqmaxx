@@ -200,6 +200,7 @@ needed for pushing, pulling and updating the images
 | base-ubuntu-16.04                  | base:ubuntu-16.04          | base image for Ubuntu 16.04, certificates, locale |
 | base-ubuntu-18.04                  | base:ubuntu-18.04          | base image for Ubuntu 18.04, certificates, locale |
 | base-ubuntu-20.04                  | base:ubuntu-20.04          | base image for Ubuntu 20.04, certificates, locale |
+| base-ubuntu-22.04                  | base:ubuntu-22.04          | base image for Ubuntu 22.04, certificates, locale |
 | ---------------------------------- | -------------------------- | ------------------------------------------------- |
 | ptxdist-base-ubuntu-14.04          | ptxdist-base:ubuntu-14.04  | ptxdist support for Ubuntu 14.04, toolchains      |
 | ptxdist-base-ubuntu-18.04          | ptxdist-base:ubuntu-18.04  | ptxdist support for Ubuntu 18.04, toolchains      |
@@ -213,20 +214,26 @@ needed for pushing, pulling and updating the images
 | yocto-base-ubuntu-16.04            | yocto-base:ubuntu-14.04    | yocto support for Ubuntu 14.04, tools             |
 | yocto-base-ubuntu-18.04            | yocto-base:ubuntu-16.04    | yocto support for Ubuntu 16.04, tools             |
 | yocto-base-ubuntu-20.04            | yocto-base:ubuntu-20.04    | yocto support for Ubuntu 20.04, tools             |
+| yocto-base-ubuntu-22.04            | yocto-base:ubuntu-22.04    | yocto support for Ubuntu 22.04, tools             |
 | ---------------------------------- | -------------------------- | ------------------------------------------------- |
 | yocto-devel-ubuntu-16.04           | yocto-devel:ubuntu-14.04   | yocto support for Ubuntu 14.04, local user        |
 | yocto-devel-ubuntu-18.04           | yocto-devel:ubuntu-16.04   | yocto support for Ubuntu 16.04, local user        |
 | yocto-devel-ubuntu-20.04           | yocto-devel:ubuntu-20.04   | yocto support for Ubuntu 20.04, local user        |
+| yocto-devel-ubuntu-22.04           | yocto-devel:ubuntu-22.04   | yocto support for Ubuntu 22.04, local user        |
 | ---------------------------------- | -------------------------- | ------------------------------------------------- |
 | yocto-ubuntu-16.04                 | yocto:ubuntu-14.04         | yocto support for Ubuntu 14.04, jenkins support   |
 | yocto-ubuntu-18.04                 | yocto:ubuntu-16.04         | yocto support for Ubuntu 16.04, jenkins support   |
 | yocto-ubuntu-20.04                 | yocto:ubuntu-20.04         | yocto support for Ubuntu 20.04, jenkins support   |
+| yocto-ubuntu-22.04                 | yocto:ubuntu-22.04         | yocto support for Ubuntu 22.04, jenkins support   |
 | ---------------------------------- | -------------------------- | ------------------------------------------------- |
 | bare-base-ubuntu-18.04             | bare-base:ubuntu-18.04     | toolchains only (Ubuntu 18.04)                    |
+| bare-base-ubuntu-22.04             | bare-base:ubuntu-22.04     | toolchains only (Ubuntu 24.04)                    |
 | ---------------------------------- | -------------------------- | ------------------------------------------------- |
 | bare-devel-ubuntu-18.04            | bare-devel:ubuntu-18.04    | toolchains only (Ubuntu 18.04), local user        |
+| bare-devel-ubuntu-22.04            | bare-devel:ubuntu-22.04    | toolchains only (Ubuntu 22.04), local user        |
 | ---------------------------------- | -------------------------- | ------------------------------------------------- |
 | bare-ubuntu-18.04                  | bare:ubuntu-18.04          | toolchains only (Ubuntu 18.04), gitlab-ci support |
+| bare-ubuntu-22.04                  | bare:ubuntu-22.04          | toolchains only (Ubuntu 22.04), gitlab-ci support |
 
 ## Customizing images and containers
 
