@@ -33,8 +33,7 @@ RUN \
     git config --file=/home/${USER}/.gitconfig --add user.email "${USER}@autobuild.org" && \
     git config --file=/home/${USER}/.gitconfig --add user.name "${USER}"
 
-
-# install java from launchpad (jenkins needs java-11)
+# install java from launchpad (jenkins needs newer version than the distro default)
 
 RUN \
 	echo "deb [trusted=yes] http://ppa.launchpad.net/openjdk-r/ppa/ubuntu trusty main" >> /etc/apt/sources.list && \

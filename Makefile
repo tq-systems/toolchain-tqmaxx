@@ -18,7 +18,7 @@ CI_USER_UID ?= 1010
 CI_USER_GID ?= 1010
 
 # used java version in container
-CI_JAVA_VERSION ?= openjdk-11-jre
+CI_JAVA_VERSION ?= openjdk-17-jre
 
 # used gitlab cli version in container
 CI_GLAB_VERSION ?= 1.36.0

@@ -28,6 +28,8 @@ RUN \
 		--shell /bin/bash \
 		${USER}
 
+# install java (jenkins needs newer version than the distro default)
+
 RUN \
 	apt-get update && apt-get -y upgrade && \
 	apt-get install -y \

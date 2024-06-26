@@ -33,7 +33,7 @@ RUN \
     git config --file=/home/${USER}/.gitconfig --add user.email "${USER}@autobuild.org" && \
     git config --file=/home/${USER}/.gitconfig --add user.name "${USER}"
 
-# install java (jenkins needs java8)
+# install java (jenkins needs newer version than the distro default)
 
 RUN \
 	apt-get update && apt-get -y upgrade && \
