@@ -36,10 +36,9 @@ RUN \
 # install java from launchpad (jenkins needs newer version than the distro default)
 
 RUN \
-	echo "deb [trusted=yes] http://ppa.launchpad.net/openjdk-r/ppa/ubuntu trusty main" >> /etc/apt/sources.list && \
+	add-apt-repository ppa:openjdk-r/ppa && \
 	apt-get update && apt-get -y upgrade && \
-	apt-get install -y \
-		${JAVA_VERSION} && \
+	apt-get install -y ${JAVA_VERSION} && \
 	apt-get autoremove --yes && apt-get clean --yes && \
 	rm -rf /var/lib/apt/lists/*
 
