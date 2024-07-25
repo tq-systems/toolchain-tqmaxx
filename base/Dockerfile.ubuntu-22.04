@@ -50,10 +50,9 @@ ADD base/gitconfig /etc/gitconfig
 
 # install up to date git version
 RUN \
-	echo "deb [trusted=yes] https://ppa.launchpadcontent.net/git-core/ppa/ubuntu jammy main" >> /etc/apt/sources.list && \
+	add-apt-repository ppa:git-core/ppa && \
 	apt-get update && apt-get -y upgrade && \
-	apt-get install -y \
-		git && \
+	apt-get install -y git && \
 	apt-get autoremove --yes && apt-get clean --yes && \
 	rm -rf /var/lib/apt/lists/*
 
