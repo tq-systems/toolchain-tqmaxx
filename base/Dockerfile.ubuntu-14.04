@@ -24,7 +24,6 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
 	ca-certificates \
 	file \
 	gawk \
-	git \
 	jq \
 	locales \
 	lsb-release \
@@ -48,6 +47,14 @@ ENV LANGUAGE en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 ADD base/gitconfig /etc/gitconfig
+
+# install up to date git version
+RUN \
+	add-apt-repository ppa:git-core/ppa && \
+	apt-get update && apt-get -y upgrade && \
+	apt-get install -y git && \
+	apt-get autoremove --yes && apt-get clean --yes && \
+	rm -rf /var/lib/apt/lists/*
 
 # install gitlab cli
 RUN \
