@@ -17,7 +17,10 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
 	diffstat \
 	gcc \
 	iputils-ping \
+	libc6-i386 \
 	libc6:i386 \
+	libc6-dev-i386 \
+	libc6-dev:i386 \
 	libegl1-mesa \
 	libsdl1.2-dev \
 	liblz4-tool \
