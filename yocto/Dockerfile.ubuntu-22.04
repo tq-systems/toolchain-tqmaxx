@@ -34,7 +34,9 @@ RUN \
 	apt-get update && apt-get -y upgrade && \
 	apt-get install -y \
 		${JAVA_VERSION} \
-		lavacli && \
+		crudini \
+		lavacli \
+		python3-cairo && \
 	apt-get autoremove --yes && apt-get clean --yes && \
 	rm -rf /var/lib/apt/lists/*
 
