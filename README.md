@@ -28,7 +28,7 @@ should work for every modern debian based distro that has a newer version of
 docker.
 
 ```bash
-$ apt install docker docker-compose
+$ apt install docker docker-compose-v2
 ```
 
 The following things are used in this repo and throughout this README:
@@ -37,7 +37,7 @@ The following things are used in this repo and throughout this README:
   usage on a development workstation
 - Access to a docker registry for the docker images. To abstract this the
   `${REGISTRY_BASE_URL}`variable is used
-- Usage of a `docker-compose.yaml` file and the `docker-compose` tool to declare
+- Usage of a `docker-compose.yaml` file and the `docker-compose-v2` tool to declare
   dependencies between docker images (called services in docker-compose)
 - The changelog is created with [changie](https://changie.dev/guide/installation/)
 - A default user is added via docker build args,
@@ -62,7 +62,7 @@ $export REGISTRY_BASE_URL=${MY_REGISTRY_BASE_URL}
 
 The bare, ptxdist and yocto containers define a default user using the ARG statement. In the Makefile, ci_user_name, ci_user_uid, ci_user_gid are set to default values (name=sysiphos, uid=1010, gid=1010). 
 
-Call docker-compose with build-arg to change the default user:
+Call docker compose with build-arg to change the default user:
 
 ```
 --build-arg ci_user_name=<name>
@@ -81,12 +81,12 @@ $ make all
 ```
 
 ### Build image
-Use *docker-compose* to build an image:
+Use *docker compose* to build an image:
 
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
-$ IMAGE=<service name from docker-compose.yaml>
-$ docker-compose build --build-arg registry_base_url=${REGISTRY_BASE_URL} ${IMAGE}
+$ IMAGE=<service name from docker compose.yaml>
+$ docker compose build --build-arg registry_base_url=${REGISTRY_BASE_URL} ${IMAGE}
 ```
 
 The [Default user](#default-user) could be changed for bare, ptxdist and yocto images.
@@ -100,7 +100,7 @@ $ export REGISTRY_BASE_URL=<registry server/path on server>
 # if IMAGE is not set, all services declared in docker-compose.yaml are pushed
 $ IMAGE=<service name from docker-compose.yaml>
 $ docker login -u <user> ${REGISTRY_BASE_URL}
-$ docker-compose push ${IMAGE}
+$ docker compose push ${IMAGE}
 $ docker logout
 ```
 
@@ -113,7 +113,7 @@ $ export REGISTRY_BASE_URL=<registry server/path on server>
 # if IMAGE is not set, all services declared in docker-compose.yaml are pulled
 $ IMAGE=<service name from docker-compose.yaml>
 $ docker login -u <user> ${REGISTRY_BASE_URL}
-$ docker-compose pull ${IMAGE}
+$ docker compose pull ${IMAGE}
 $ docker logout
 ```
 
@@ -132,7 +132,7 @@ development](#container-for-local-development).
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
 $ IMAGE=<service name from docker-compose.yaml>
-$ docker-compose run --rm ${IMAGE}
+$ docker compose run --rm ${IMAGE}
 ```
 
 ### Rebuild image from scratch
@@ -140,7 +140,7 @@ $ docker-compose run --rm ${IMAGE}
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
 $ IMAGE=<service name from docker-compose.yaml>
-$ docker-compose build --build-arg registry_base_url=${REGISTRY_BASE_URL} --no-cache --force-rm ${IMAGE}
+$ docker compose build --build-arg registry_base_url=${REGISTRY_BASE_URL} --no-cache --force-rm ${IMAGE}
 ```
 
 ## Makefile support
@@ -266,17 +266,17 @@ base service.
 Many more options are available and documented in
 https://docs.docker.com/compose/compose-file.
 
-### Custom docker-compose run command
+### Custom docker compose run command
 
 The options that can be set in the `docker-compose.yaml` file, can also be
-passed as options to the `docker-compose` CLI:
+passed as options to the `docker compose` CLI:
 
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
-$ docker-compose run --volume=${HOME}/devel:/devel <service name from docker-compose.yaml>
+$ docker compose run --volume=${HOME}/devel:/devel <service name from docker-compose.yaml>
 ```
 
-One can add custom command line arguments for the `docker-compose run`
+One can add custom command line arguments for the `docker compose run`
 command to the `run` target in the Makefile via the `RUN_ARGS` env variable.
 This way, the `run` target can be used as a shorthand and volumes are mounted
 on every container that is started with the `run` target.

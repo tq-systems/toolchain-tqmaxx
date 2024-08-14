@@ -73,26 +73,26 @@ ALL_IMAGES = \
 	${CCS_BASE_IMAGES}
 
 all:
-	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker-compose build ${BUILD_ARGS} ${ALL_IMAGES}
+	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker compose build ${BUILD_ARGS} ${ALL_IMAGES}
 
 new:
-	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker-compose build --no-cache --force-rm ${BUILD_ARGS} ${ALL_IMAGES}
+	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker compose build --no-cache --force-rm ${BUILD_ARGS} ${ALL_IMAGES}
 
 image:
-	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker-compose build ${BUILD_ARGS} ${IMAGE}
+	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker compose build ${BUILD_ARGS} ${IMAGE}
 
 # Example from README.md with custom options devel templates:
 # export RUN_ARGS="--rm -e HOST_USER_ID=$(id -u) -e HOST_USER_GID=$(id -g) --volume ${HOME}/devel:/devel"
-# docker-compose run ${RUN_ARGS} ${IMAGE}
+# docker compose run ${RUN_ARGS} ${IMAGE}
 run:
 	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && \
-	docker-compose run ${RUN_ARGS} ${IMAGE}
+	docker compose run ${RUN_ARGS} ${IMAGE}
 
 push:
-	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker-compose push
+	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker compose push
 
 pull:
-	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker-compose pull
+	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker compose pull
 
 clean:
 	docker system prune -f
