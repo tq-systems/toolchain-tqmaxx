@@ -27,6 +27,8 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
 	jq \
 	locales \
 	lsb-release \
+	python3-git \
+	python3-ply \
 	software-properties-common \
 	texinfo \
 	unzip \
