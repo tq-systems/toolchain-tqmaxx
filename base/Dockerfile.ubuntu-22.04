@@ -24,6 +24,7 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
 	ca-certificates \
 	file \
 	gawk \
+	git-lfs \
 	jq \
 	locales \
 	lsb-release \
