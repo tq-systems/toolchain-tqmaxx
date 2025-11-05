@@ -36,6 +36,12 @@ services:
       dockerfile: base/Dockerfile.ubuntu-22.04
     image: ${REGISTRY_BASE_URL}/base:ubuntu-22.04
 
+  base-ubuntu-24.04:
+    build:
+      context: .
+      dockerfile: base/Dockerfile.ubuntu-24.04
+    image: ${REGISTRY_BASE_URL}/base:ubuntu-24.04
+
   python-3.12:
     build:
       context: .

@@ -1,0 +1,65 @@
+################################################################################
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024 TQ-Systems GmbH <oss@ew.tq-group.com>
+# author: Martin Schmiedel
+################################################################################
+
+FROM amd64/ubuntu:24.04
+
+ARG ci_glab_version=1.10
+
+# set environmet
+ENV DEBIAN_FRONTEND=noninteractive
+ENV GLAB_VERSION=${ci_glab_version}
+
+#
+# see README in directory
+#
+RUN echo "Acquire::http::Pipeline-Depth "0";" > /etc/apt/apt.conf.d/docker-tweak \
+&& sed -i 's/http:\/\/archive\.ubuntu\.com/http:\/\/de\.archive\.ubuntu\.com/g' /etc/apt/sources.list
+
+RUN apt-get update && apt-get -y upgrade && apt-get install -y \
+	apt-transport-https \
+	bc \
+	build-essential \
+	ca-certificates \
+	file \
+	gawk \
+	jq \
+	locales \
+	lsb-release \
+	software-properties-common \
+	texinfo \
+	unzip \
+	wget \
+&& apt-get autoremove --yes && apt-get clean --yes && \
+rm -rf /var/lib/apt/lists/*
+
+ADD certificates/* /usr/local/share/ca-certificates/
+RUN update-ca-certificates && rm -f /usr/local/share/ca-certificates/.keepme
+
+RUN locale-gen --lang en_US.UTF-8 && \
+	update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
+# update-locale creates /etc/default/locale (used by "su" command or user remapping)
+# docker doesn't use etc/default/locale if container uses USER statement for non root user
+# therefore ENV has to be be used to set locale variables for derived docker containers
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+
+ADD base/gitconfig /etc/gitconfig
+
+# install up to date git version
+RUN \
+	add-apt-repository ppa:git-core/ppa && \
+	apt-get update && apt-get -y upgrade && \
+	apt-get install -y git && \
+	apt-get autoremove --yes && apt-get clean --yes && \
+	rm -rf /var/lib/apt/lists/*
+
+# install gitlab cli
+RUN \
+	wget https://gitlab.com/gitlab-org/cli/-/releases/v${GLAB_VERSION}/downloads/glab_${GLAB_VERSION}_Linux_x86_64.tar.gz && \
+	tar -zxf glab_${GLAB_VERSION}_Linux_x86_64.tar.gz bin/glab --directory /usr/local/bin && \
+	rm glab_${GLAB_VERSION}_Linux_x86_64.tar.gz
+
