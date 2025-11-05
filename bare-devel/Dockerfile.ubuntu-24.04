@@ -1,0 +1,47 @@
+################################################################################
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021-2024 TQ-Systems GmbH <oss@ew.tq-group.com>
+# author: Martin Schmiedel
+################################################################################
+
+ARG registry_base_url=registry.example.com:5005/registry-path
+FROM ${registry_base_url}/bare-base:ubuntu-24.04
+
+ENV USER=devel USER_ID=1000 USER_GID=1000
+
+RUN \
+	apt-get update && apt-get -y upgrade && \
+	apt-get install -y \
+		bash-completion \
+		kmod \
+		nano \
+		ncurses-dev \
+		python3-tk \
+		util-linux && \
+	apt-get autoremove --yes && apt-get clean --yes && \
+	rm -rf /var/lib/apt/lists/*
+
+# add user to enable bind mounts
+# Workaround for remoteuser id issue
+# https://github.com/microsoft/vscode-remote-release/issues/10030
+RUN \
+	usermod -u 2000 ubuntu && \
+	groupmod -g 2000 ubuntu && \
+	groupadd --gid "${USER_GID}" "${USER}" && \
+	useradd \
+		--uid ${USER_ID} \
+		--gid ${USER_GID} \
+		--create-home \
+		--shell /bin/bash \
+		${USER}
+
+RUN \
+	mkdir -p /home/${USER}/bin && \
+	cd /home/${USER}/bin && \
+	ln -s /opt/cmake-3.31.4-linux-x86_64/bin/cmake cmake && \
+	ln -s /opt/ninja-v1.12.1/ninja ninja
+
+COPY scripts/usermap.sh /
+RUN  chmod u+x /usermap.sh
+
+ENTRYPOINT ["/usermap.sh"]
