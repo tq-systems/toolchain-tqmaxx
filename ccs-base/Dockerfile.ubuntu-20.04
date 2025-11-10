@@ -4,7 +4,7 @@
 # author: Martin Schmiedel
 ################################################################################
 
-ARG registry_base_url
+ARG registry_base_url=registry.example.com:5005/registry-path
 FROM ${registry_base_url}/base:ubuntu-20.04
 
 #Install all packages needed
@@ -39,10 +39,10 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
 && apt-get autoremove --yes && apt-get clean --yes
 RUN rm -rf /var/lib/apt/lists/*
 
-ARG ci_user_name
-ARG ci_user_uid
-ARG ci_user_gid
-ARG ci_java_version
+ARG ci_user_name=sysiphos
+ARG ci_user_uid=1010
+ARG ci_user_gid=1010
+ARG ci_java_version=openjdk-17-jre
 
 ENV USER=${ci_user_name} USER_ID=${ci_user_uid} USER_GID=${ci_user_gid}\
 	JAVA_VERSION=${ci_java_version}

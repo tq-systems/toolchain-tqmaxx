@@ -4,12 +4,12 @@
 # author: Martin Schmiedel
 ################################################################################
 
-ARG registry_base_url
+ARG registry_base_url=registry.example.com:5005/registry-path
 FROM ${registry_base_url}/bare-base:ubuntu-18.04
 
-ARG ci_user_name
-ARG ci_user_uid
-ARG ci_user_gid
+ARG ci_user_name=sysiphos
+ARG ci_user_uid=1010
+ARG ci_user_gid=1010
 
 ENV USER=${ci_user_name} USER_ID=${ci_user_uid} USER_GID=${ci_user_gid}
 

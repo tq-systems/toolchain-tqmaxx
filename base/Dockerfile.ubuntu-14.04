@@ -6,7 +6,7 @@
 
 FROM amd64/ubuntu:14.04
 
-ARG ci_glab_version
+ARG ci_glab_version=1.10
 
 # set environmet
 ENV DEBIAN_FRONTEND=noninteractive

@@ -4,7 +4,7 @@
 # author: Martin Schmiedel
 ################################################################################
 
-ARG registry_base_url
+ARG registry_base_url=registry.example.com:5005/registry-path
 FROM ${registry_base_url}/yocto-base:ubuntu-16.04
 
 ENV USER=devel USER_ID=1000 USER_GID=1000
