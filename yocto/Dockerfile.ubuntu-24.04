@@ -1,0 +1,45 @@
+################################################################################
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024 TQ-Systems GmbH <oss@ew.tq-group.com>
+# author: Martin Schmiedel
+################################################################################
+
+ARG registry_base_url=registry.example.com:5005/registry-path
+FROM ${registry_base_url}/yocto-base:ubuntu-24.04
+
+ARG ci_user_name=sysiphos
+ARG ci_user_uid=1010
+ARG ci_user_gid=1010
+ARG ci_java_version=openjdk-17-jre
+
+ENV USER=${ci_user_name} USER_ID=${ci_user_uid} USER_GID=${ci_user_gid}\
+	JAVA_VERSION=${ci_java_version}
+
+# add user
+# to enable bind mounts on jenkins slaves
+# appropriate users must be added to every jenkins slave
+
+RUN \
+	groupadd --gid "${USER_GID}" "${USER}" && \
+	useradd \
+		--uid ${USER_ID} \
+		--gid ${USER_GID} \
+		--create-home \
+		--shell /bin/bash \
+		${USER}
+
+# install java (jenkins needs newer version than the distro default)
+
+RUN \
+	apt-get update && apt-get -y upgrade && \
+	apt-get install -y \
+		${JAVA_VERSION} \
+		crudini \
+		lavacli \
+		pipx \
+		python3-cairo \
+		python3-yaml && \
+	apt-get autoremove --yes && apt-get clean --yes && \
+	rm -rf /var/lib/apt/lists/*
+
+USER "${USER}"
