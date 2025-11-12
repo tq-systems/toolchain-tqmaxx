@@ -1,0 +1,30 @@
+################################################################################
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024 TQ-Systems GmbH <oss@ew.tq-group.com>
+# author: Martin Schmiedel
+################################################################################
+
+FROM python:3.12
+
+ARG ci_user_name=builder
+# UID / GID is ubuntu default for first user account
+ARG ci_user_uid=1000
+ARG ci_user_gid=1000
+
+# add user
+# to enable bind mounts on build nodes
+# appropriate users must be added to every build node
+
+ENV USER=${ci_user_name} USER_ID=${ci_user_uid} USER_GID=${ci_user_gid}
+
+RUN \
+	groupadd --gid "${USER_GID}" "${USER}" && \
+	useradd \
+	--uid ${USER_ID} \
+	--gid ${USER_GID} \
+	--create-home \
+	--shell /bin/bash \
+	${USER}
+
+USER "${USER}"
+
