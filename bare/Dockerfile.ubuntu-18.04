@@ -26,7 +26,7 @@ RUN \
 		--shell /bin/bash \
 		${USER}
 
-COPY bare/.buildman /home/${USER}/
+COPY bare/.buildman.ubuntu-18.04 /home/${USER}/.buildman
 COPY bare/.gitconfig /home/${USER}/
 
 RUN git clone --depth=1 --branch TQM-v2021.10 https://github.com/tq-systems/u-boot-tqmaxx.git /home/${USER}/u-boot

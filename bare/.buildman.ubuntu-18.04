@@ -24,3 +24,4 @@ powerpc = powerpc
 # snapper-boards=ENABLE_AT91_TEST=1
 # snapper9260=${snapper-boards} BUILD_TAG=442
 # snapper9g45=${snapper-boards} BUILD_TAG=443
+
