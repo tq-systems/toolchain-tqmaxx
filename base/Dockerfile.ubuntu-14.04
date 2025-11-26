@@ -17,6 +17,9 @@ ENV GLAB_VERSION=${ci_glab_version}
 #
 RUN echo "Acquire::http::Pipeline-Depth "0";" > /etc/apt/apt.conf.d/docker-tweak
 
+ADD certificates/* /usr/local/share/ca-certificates/
+RUN update-ca-certificates && rm -f /usr/local/share/ca-certificates/.keepme
+
 RUN apt-get update && apt-get -y upgrade && apt-get install -y \
 	apt-transport-https \
 	bc \
@@ -33,9 +36,6 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
 	wget \
 && apt-get autoremove --yes && apt-get clean --yes && \
 rm -rf /var/lib/apt/lists/*
-
-ADD certificates/* /usr/local/share/ca-certificates/
-RUN update-ca-certificates && rm -f /usr/local/share/ca-certificates/.keepme
 
 RUN locale-gen --lang en_US.UTF-8 && \
 	update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
