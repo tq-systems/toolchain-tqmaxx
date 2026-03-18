@@ -30,6 +30,7 @@ RUN \
 		python3-pip \
 		python3-pyelftools \
 		python3-setuptools \
+		yamllint \
 		swig \
 		tree \
 		uuid-dev \
