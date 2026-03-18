@@ -30,6 +30,6 @@ USER_GID=${HOST_USER_GID:=$USER_GID}
 
 usermod  -u ${USER_ID}  ${USER}
 groupmod -g ${USER_GID} ${USER}
-usermod  -g ${USER_ID}  ${USER}
+usermod  -g ${USER_GID} ${USER}
 
 su - "${USER}"
