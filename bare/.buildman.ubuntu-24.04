@@ -1,0 +1,27 @@
+[toolchain]
+# name = path
+# e.g. x86 = /opt/gcc-4.6.3-nolibc/x86_64-linux
+aarch64 = /opt/OSELAS.Toolchain-2024.11.1/aarch64-v8a-linux-gnu/gcc-14.2.1-clang-19.1.7-glibc-2.40-binutils-2.43.1-kernel-6.11.6-sanitized
+arm = /opt/OSELAS.Toolchain-2024.11.1/arm-v7a-linux-gnueabihf/gcc-14.2.1-clang-19.1.7-glibc-2.40-binutils-2.43.1-kernel-6.11.6-sanitized
+powerpc = /opt/OSELAS.Toolchain-2024.11.1/powerpc-603e-linux-gnu/gcc-14.2.1-glibc-2.40-binutils-2.43.1-kernel-6.11.6-sanitized
+
+[toolchain-prefix]
+# name = path to prefix
+aarch64 = /opt/OSELAS.Toolchain-2024.11.1/aarch64-v8a-linux-gnu/gcc-14.2.1-clang-19.1.7-glibc-2.40-binutils-2.43.1-kernel-6.11.6-sanitized/bin/aarch64-v8a-linux-gnu-
+arm = /opt/OSELAS.Toolchain-2024.11.1/arm-v7a-linux-gnueabihf/gcc-14.2.1-clang-19.1.7-glibc-2.40-binutils-2.43.1-kernel-6.11.6-sanitized/bin/arm-v7a-linux-gnueabihf-
+powerpc = /opt/OSELAS.Toolchain-2024.11.1/powerpc-603e-linux-gnu/gcc-14.2.1-glibc-2.40-binutils-2.43.1-kernel-6.11.6-sanitized/bin/powerpc-603e-linux-gnu-
+
+[toolchain-alias]
+# arch = alias
+# Indicates which toolchain should be used to build for that arch
+aarch64 = aarch64
+arm = arm
+powerpc = powerpc
+
+[make-flags]
+# Special flags to pass to 'make' for certain boards, e.g. to pass a test
+# flag and build tag to snapper boards:
+# snapper-boards=ENABLE_AT91_TEST=1
+# snapper9260=${snapper-boards} BUILD_TAG=442
+# snapper9g45=${snapper-boards} BUILD_TAG=443
+
