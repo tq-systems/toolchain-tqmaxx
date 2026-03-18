@@ -1,0 +1,3 @@
+kind: Fixed
+body: 'base: move certificate handling before first apt-get'
+time: 2026-03-18T16:50:02.027504246+01:00
