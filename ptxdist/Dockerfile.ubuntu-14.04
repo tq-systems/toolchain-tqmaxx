@@ -42,4 +42,6 @@ RUN \
 	apt-get autoremove --yes && apt-get clean --yes && \
 	rm -rf /var/lib/apt/lists/*
 
+COPY ptxdist/.buildman.ubuntu-14.04 /home/${USER}/.buildman
+
 USER "${USER}"

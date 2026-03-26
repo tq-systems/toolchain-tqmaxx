@@ -1,0 +1,16 @@
+[toolchain]
+# name = path
+# e.g. x86 = /opt/gcc-4.6.3-nolibc/x86_64-linux
+arm = /opt/OSELAS.Toolchain-2014.12.2/arm-v7a-linux-gnueabihf/gcc-4.9.2-glibc-2.20-binutils-2.24-kernel-3.16-sanitized
+
+[toolchain-prefix]
+# name = path to prefix
+arm = /opt/OSELAS.Toolchain-2014.12.2/arm-v7a-linux-gnueabihf/gcc-4.9.2-glibc-2.20-binutils-2.24-kernel-3.16-sanitized/bin/arm-v7a-linux-gnueabihf-
+
+[toolchain-alias]
+# arch = alias
+# Indicates which toolchain should be used to build for that arch
+arm = arm
+
+[make-flags]
+
