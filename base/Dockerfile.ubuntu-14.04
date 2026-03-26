@@ -34,6 +34,13 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
 	texinfo \
 	unzip \
 	wget \
+	libcurl4-openssl-dev \
+	libssl-dev \
+	build-essential gettext \
+	libexpat1-dev \
+	zlib1g-dev \
+	curl \
+	autoconf \
 && apt-get autoremove --yes && apt-get clean --yes && \
 rm -rf /var/lib/apt/lists/*
 
@@ -48,17 +55,16 @@ ENV LC_ALL=en_US.UTF-8
 
 ADD base/gitconfig /etc/gitconfig
 
-# install up to date git version
-RUN \
-	add-apt-repository ppa:git-core/ppa && \
-	apt-get update && apt-get -y upgrade && \
-	apt-get install -y git && \
-	apt-get autoremove --yes && apt-get clean --yes && \
-	rm -rf /var/lib/apt/lists/*
-
 # install gitlab cli
 RUN \
 	wget https://gitlab.com/gitlab-org/cli/-/releases/v${GLAB_VERSION}/downloads/glab_${GLAB_VERSION}_Linux_x86_64.tar.gz && \
 	tar -zxf glab_${GLAB_VERSION}_Linux_x86_64.tar.gz bin/glab --directory /usr/local/bin && \
 	rm glab_${GLAB_VERSION}_Linux_x86_64.tar.gz
 
+RUN curl -L https://www.kernel.org/pub/software/scm/git/git-2.43.0.tar.gz | tar xz \
+	&& cd git-2.43.0 \
+	&& make configure \
+	&& ./configure --with-curl --without-tcltk CFLAGS="-std=gnu99 -O2" \
+	&& make -j$(nproc) \
+	&& make install \
+	&& cd .. && rm -rf git-2.43.0
