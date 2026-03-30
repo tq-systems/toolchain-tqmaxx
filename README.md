@@ -194,46 +194,69 @@ needed for pushing, pulling and updating the images
 
 ## Supported images
 
-| Service name (docker-compose.yaml) | Image and tag              | purpose    |
-| :--------------------------------: | :------------------------: | :-----------------------------------------------: |
-| base-ubuntu-14.04                  | base:ubuntu-14.04          | base image for Ubuntu 14.04, certificates, locale |
-| base-ubuntu-16.04                  | base:ubuntu-16.04          | base image for Ubuntu 16.04, certificates, locale |
-| base-ubuntu-18.04                  | base:ubuntu-18.04          | base image for Ubuntu 18.04, certificates, locale |
-| base-ubuntu-20.04                  | base:ubuntu-20.04          | base image for Ubuntu 20.04, certificates, locale |
-| base-ubuntu-22.04                  | base:ubuntu-22.04          | base image for Ubuntu 22.04, certificates, locale |
-| ---------------------------------- | -------------------------- | ------------------------------------------------- |
-| ptxdist-base-ubuntu-14.04          | ptxdist-base:ubuntu-14.04  | ptxdist support for Ubuntu 14.04, toolchains      |
-| ptxdist-base-ubuntu-18.04          | ptxdist-base:ubuntu-18.04  | ptxdist support for Ubuntu 18.04, toolchains      |
-| ---------------------------------- | -------------------------- | ------------------------------------------------- |
-| ptxdist-devel-ubuntu-14.04         | ptxdist-devel:ubuntu-14.04 | ptxdist support for Ubuntu 14.04, local user      |
-| ptxdist-devel-ubuntu-18.04         | ptxdist-devel:ubuntu-18.04 | ptxdist support for Ubuntu 18.04, local user      |
-| ---------------------------------- | -------------------------- | ------------------------------------------------- |
-| ptxdist-ubuntu-14.04               | ptxdist:ubuntu-14.04       | ptxdist support for Ubuntu 14.04, jenkins support |
-| ptxdist-ubuntu-18.04               | ptxdist:ubuntu-18.04       | ptxdist support for Ubuntu 18.04, jenkins support |
-| ---------------------------------- | -------------------------- | ------------------------------------------------- |
-| yocto-base-ubuntu-16.04            | yocto-base:ubuntu-14.04    | yocto support for Ubuntu 14.04, tools             |
-| yocto-base-ubuntu-18.04            | yocto-base:ubuntu-16.04    | yocto support for Ubuntu 16.04, tools             |
-| yocto-base-ubuntu-20.04            | yocto-base:ubuntu-20.04    | yocto support for Ubuntu 20.04, tools             |
-| yocto-base-ubuntu-22.04            | yocto-base:ubuntu-22.04    | yocto support for Ubuntu 22.04, tools             |
-| ---------------------------------- | -------------------------- | ------------------------------------------------- |
-| yocto-devel-ubuntu-16.04           | yocto-devel:ubuntu-14.04   | yocto support for Ubuntu 14.04, local user        |
-| yocto-devel-ubuntu-18.04           | yocto-devel:ubuntu-16.04   | yocto support for Ubuntu 16.04, local user        |
-| yocto-devel-ubuntu-20.04           | yocto-devel:ubuntu-20.04   | yocto support for Ubuntu 20.04, local user        |
-| yocto-devel-ubuntu-22.04           | yocto-devel:ubuntu-22.04   | yocto support for Ubuntu 22.04, local user        |
-| ---------------------------------- | -------------------------- | ------------------------------------------------- |
-| yocto-ubuntu-16.04                 | yocto:ubuntu-14.04         | yocto support for Ubuntu 14.04, jenkins support   |
-| yocto-ubuntu-18.04                 | yocto:ubuntu-16.04         | yocto support for Ubuntu 16.04, jenkins support   |
-| yocto-ubuntu-20.04                 | yocto:ubuntu-20.04         | yocto support for Ubuntu 20.04, jenkins support   |
-| yocto-ubuntu-22.04                 | yocto:ubuntu-22.04         | yocto support for Ubuntu 22.04, jenkins support   |
-| ---------------------------------- | -------------------------- | ------------------------------------------------- |
-| bare-base-ubuntu-18.04             | bare-base:ubuntu-18.04     | toolchains only (Ubuntu 18.04)                    |
-| bare-base-ubuntu-22.04             | bare-base:ubuntu-22.04     | toolchains only (Ubuntu 24.04)                    |
-| ---------------------------------- | -------------------------- | ------------------------------------------------- |
-| bare-devel-ubuntu-18.04            | bare-devel:ubuntu-18.04    | toolchains only (Ubuntu 18.04), local user        |
-| bare-devel-ubuntu-22.04            | bare-devel:ubuntu-22.04    | toolchains only (Ubuntu 22.04), local user        |
-| ---------------------------------- | -------------------------- | ------------------------------------------------- |
-| bare-ubuntu-18.04                  | bare:ubuntu-18.04          | toolchains only (Ubuntu 18.04), gitlab-ci support |
-| bare-ubuntu-22.04                  | bare:ubuntu-22.04          | toolchains only (Ubuntu 22.04), gitlab-ci support |
+Each image category follows a layered structure: a shared `*-base` image
+provides the common toolchain and dependencies, while the `*-devel` variant
+adds uid/gid mapping for local development and the plain variant (without
+suffix) adds CI support tools (e.g. GitLab Runner, glab-cli). The `*-base`
+images are intermediate layers and not intended for direct use.
+
+### Base
+
+| Service name      |   Image and tag   | Purpose                                           |
+|:------------------|:-----------------:|:--------------------------------------------------|
+| base-ubuntu-14.04 | base:ubuntu-14.04 | Base image for Ubuntu 14.04, certificates, locale |
+| base-ubuntu-16.04 | base:ubuntu-16.04 | Base image for Ubuntu 16.04, certificates, locale |
+| base-ubuntu-18.04 | base:ubuntu-18.04 | Base image for Ubuntu 18.04, certificates, locale |
+| base-ubuntu-20.04 | base:ubuntu-20.04 | Base image for Ubuntu 20.04, certificates, locale |
+| base-ubuntu-22.04 | base:ubuntu-22.04 | Base image for Ubuntu 22.04, certificates, locale |
+| base-ubuntu-24.04 | base:ubuntu-24.04 | Base image for Ubuntu 24.04, certificates, locale |
+
+### Python
+
+| Service name | Image and tag | Purpose                                |
+|:-------------|:-------------:|:---------------------------------------|
+| python-3.12  |  python:3.12  | Python 3.12 environment for CI tooling |
+
+### PTXdist
+
+| Service name               |       Image and tag        | Purpose                                            |
+|:---------------------------|:--------------------------:|:---------------------------------------------------|
+| ptxdist-devel-ubuntu-14.04 | ptxdist-devel:ubuntu-14.04 | PTXdist for Ubuntu 14.04, local user (uid mapping) |
+| ptxdist-devel-ubuntu-18.04 | ptxdist-devel:ubuntu-18.04 | PTXdist for Ubuntu 18.04, local user (uid mapping) |
+| ptxdist-ubuntu-14.04       |    ptxdist:ubuntu-14.04    | PTXdist for Ubuntu 14.04, CI support               |
+| ptxdist-ubuntu-18.04       |    ptxdist:ubuntu-18.04    | PTXdist for Ubuntu 18.04, CI support               |
+
+### Yocto / OpenEmbedded
+
+| Service name             |      Image and tag       | Purpose                                             |
+|:-------------------------|:------------------------:|:----------------------------------------------------|
+| yocto-devel-ubuntu-16.04 | yocto-devel:ubuntu-16.04 | Yocto/OE for Ubuntu 16.04, local user (uid mapping) |
+| yocto-devel-ubuntu-18.04 | yocto-devel:ubuntu-18.04 | Yocto/OE for Ubuntu 18.04, local user (uid mapping) |
+| yocto-devel-ubuntu-20.04 | yocto-devel:ubuntu-20.04 | Yocto/OE for Ubuntu 20.04, local user (uid mapping) |
+| yocto-devel-ubuntu-22.04 | yocto-devel:ubuntu-22.04 | Yocto/OE for Ubuntu 22.04, local user (uid mapping) |
+| yocto-devel-ubuntu-24.04 | yocto-devel:ubuntu-24.04 | Yocto/OE for Ubuntu 24.04, local user (uid mapping) |
+| yocto-ubuntu-16.04       |    yocto:ubuntu-16.04    | Yocto/OE for Ubuntu 16.04, CI support               |
+| yocto-ubuntu-18.04       |    yocto:ubuntu-18.04    | Yocto/OE for Ubuntu 18.04, CI support               |
+| yocto-ubuntu-20.04       |    yocto:ubuntu-20.04    | Yocto/OE for Ubuntu 20.04, CI support               |
+| yocto-ubuntu-22.04       |    yocto:ubuntu-22.04    | Yocto/OE for Ubuntu 22.04, CI support               |
+| yocto-ubuntu-24.04       |    yocto:ubuntu-24.04    | Yocto/OE for Ubuntu 24.04, CI support               |
+
+### Bare (cross-toolchains only)
+
+| Service name            |      Image and tag      | Purpose                                                       |
+|:------------------------|:-----------------------:|:--------------------------------------------------------------|
+| bare-devel-ubuntu-18.04 | bare-devel:ubuntu-18.04 | Cross-toolchains only, Ubuntu 18.04, local user (uid mapping) |
+| bare-devel-ubuntu-22.04 | bare-devel:ubuntu-22.04 | Cross-toolchains only, Ubuntu 22.04, local user (uid mapping) |
+| bare-devel-ubuntu-24.04 | bare-devel:ubuntu-24.04 | Cross-toolchains only, Ubuntu 24.04, local user (uid mapping) |
+| bare-ubuntu-18.04       |    bare:ubuntu-18.04    | Cross-toolchains only, Ubuntu 18.04, CI support               |
+| bare-ubuntu-22.04       |    bare:ubuntu-22.04    | Cross-toolchains only, Ubuntu 22.04, CI support               |
+| bare-ubuntu-24.04       |    bare:ubuntu-24.04    | Cross-toolchains only, Ubuntu 24.04, CI support               |
+
+### CCS (TI Code Composer Studio)
+
+| Service name          |     Image and tag     | Purpose                                       |
+|:----------------------|:---------------------:|:----------------------------------------------|
+| ccs-base-ubuntu-20.04 | ccs-base:ubuntu-20.04 | TI Code Composer Studio base for Ubuntu 20.04 |
 
 ## Customizing images and containers
 
