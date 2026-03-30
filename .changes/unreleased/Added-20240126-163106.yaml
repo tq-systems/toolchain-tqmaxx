@@ -1,3 +1,0 @@
-kind: Added
-body: 'bare-base: add git-lfs to deal with NXP MCU SDK blobs stored in LFS repo.'
-time: 2024-01-26T16:31:06.566127967+01:00

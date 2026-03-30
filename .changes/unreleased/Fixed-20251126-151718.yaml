@@ -1,3 +1,0 @@
-kind: Fixed
-body: 'base/Dockerfile.ubuntu-14.04: fix apt update error'
-time: 2025-11-26T15:17:18.217436962+01:00
