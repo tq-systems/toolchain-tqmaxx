@@ -48,6 +48,12 @@ services:
       dockerfile: python/Dockerfile.python-3.12
     image: ${REGISTRY_BASE_URL}/python:3.12
 
+  rust-1.x:
+    build:
+      context: .
+      dockerfile: rust/Dockerfile.rust-1.x
+    image: ${REGISTRY_BASE_URL}/rust:1.x
+
   bare-base-ubuntu-18.04:
     build:
       context: .
