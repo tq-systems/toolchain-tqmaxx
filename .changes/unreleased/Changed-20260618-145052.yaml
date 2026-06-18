@@ -1,0 +1,3 @@
+kind: Changed
+body: Leaving IMAGE unspecified for make throws an error instead of applying a default.
+time: 2026-06-18T14:50:52.630194262+02:00
