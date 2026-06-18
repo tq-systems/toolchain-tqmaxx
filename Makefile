@@ -35,7 +35,7 @@ BUILD_ARGS = \
 
 RUN_ARGS ?= --rm
 
-IMAGE ?= bare-devel-ubuntu-18.04
+IMAGE ?= 
 
 DISTRO = ubuntu
 DISTRO_VERSIONS = 18.04 20.04 22.04 24.04
@@ -88,6 +88,11 @@ ALL_IMAGES_PREHISTORIC = \
 	${YOCTO_DEVEL_IMAGES_PREHISTORIC} \
 	${YOCTO_IMAGES_PREHISTORIC}
 
+check_image:
+ifeq ($(strip ${IMAGE}),)
+	$(error "IMAGE must be specified.")
+endif
+
 all-prehistoric:
 	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker compose build ${BUILD_ARGS} ${ALL_IMAGES_PREHISTORIC}
 
@@ -100,13 +105,13 @@ all:
 new:
 	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker compose build --no-cache --force-rm ${BUILD_ARGS} ${ALL_IMAGES}
 
-image:
+image: check_image
 	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker compose build ${BUILD_ARGS} ${IMAGE}
 
 # Example from README.md with custom options devel templates:
 # export RUN_ARGS="--rm -e HOST_USER_ID=$(id -u) -e HOST_USER_GID=$(id -g) --volume ${HOME}/devel:/devel"
 # docker compose run ${RUN_ARGS} ${IMAGE}
-run:
+run: check_image
 	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && \
 	docker compose run ${RUN_ARGS} ${IMAGE}
 
@@ -127,4 +132,4 @@ print:
 	@echo "YOCTO:	${YOCTO_BASE_IMAGES} ${YOCTO_IMAGES} ${YOCTO_DEVEL_IMAGES}"
 	@echo "BARE:	${BARE_BASE_IMAGES} ${BARE_IMAGES} ${BARE_DEVEL_IMAGES}"
 
-.PHONY: all new image run push pull print clean update
+.PHONY: all new image run push pull print clean update check_image
