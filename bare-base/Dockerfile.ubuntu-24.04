@@ -32,6 +32,11 @@ RUN \
 	wget https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz && \
 	tar --xz -xf arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz --directory /opt && \
 	rm arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz
+
+RUN \
+	wget https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi.tar.xz && \
+	tar --xz -xf arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi.tar.xz --directory /opt && \
+	rm arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi.tar.xz
 	
 RUN \
 	wget https://github.com/Kitware/CMake/releases/download/v3.31.4/cmake-3.31.4-linux-x86_64.tar.gz && \
