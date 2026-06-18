@@ -265,6 +265,12 @@ Images marked with ¹ are **prehistoric** — they are only built by
 |:-------------|:-------------:|:---------------------------------------|
 | python-3.12  |  python:3.12  | Python 3.12 environment for CI tooling |
 
+### Rust
+
+| Service name | Image and tag | Purpose                           |
+|:-------------|:-------------:|:----------------------------------|
+| rust-1.x     |   rust:1.x    | Rust 1.x channel for CI tooling   |
+
 ### PTXdist
 
 | Service name               |       Image and tag        | Purpose                                               |
