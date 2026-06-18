@@ -10,55 +10,55 @@ services:
     build:
       context: .
       dockerfile: base/Dockerfile.ubuntu-14.04
-    image: ${REGISTRY_BASE_URL}/base:ubuntu-14.04
+    image: ${REGISTRY_BASE_URL:-localhost}/base:ubuntu-14.04
 
   base-ubuntu-16.04:
     build:
       context: .
       dockerfile: base/Dockerfile.ubuntu-16.04
-    image: ${REGISTRY_BASE_URL}/base:ubuntu-16.04
+    image: ${REGISTRY_BASE_URL:-localhost}/base:ubuntu-16.04
 
   base-ubuntu-18.04:
     build:
       context: .
       dockerfile: base/Dockerfile.ubuntu-18.04
-    image: ${REGISTRY_BASE_URL}/base:ubuntu-18.04
+    image: ${REGISTRY_BASE_URL:-localhost}/base:ubuntu-18.04
 
   base-ubuntu-20.04:
     build:
       context: .
       dockerfile: base/Dockerfile.ubuntu-20.04
-    image: ${REGISTRY_BASE_URL}/base:ubuntu-20.04
+    image: ${REGISTRY_BASE_URL:-localhost}/base:ubuntu-20.04
 
   base-ubuntu-22.04:
     build:
       context: .
       dockerfile: base/Dockerfile.ubuntu-22.04
-    image: ${REGISTRY_BASE_URL}/base:ubuntu-22.04
+    image: ${REGISTRY_BASE_URL:-localhost}/base:ubuntu-22.04
 
   base-ubuntu-24.04:
     build:
       context: .
       dockerfile: base/Dockerfile.ubuntu-24.04
-    image: ${REGISTRY_BASE_URL}/base:ubuntu-24.04
+    image: ${REGISTRY_BASE_URL:-localhost}/base:ubuntu-24.04
 
   python-3.12:
     build:
       context: .
       dockerfile: python/Dockerfile.python-3.12
-    image: ${REGISTRY_BASE_URL}/python:3.12
+    image: ${REGISTRY_BASE_URL:-localhost}/python:3.12
 
   rust-1.x:
     build:
       context: .
       dockerfile: rust/Dockerfile.rust-1.x
-    image: ${REGISTRY_BASE_URL}/rust:1.x
+    image: ${REGISTRY_BASE_URL:-localhost}/rust:1.x
 
   bare-base-ubuntu-14.04:
     build:
       context: .
       dockerfile: bare-base/Dockerfile.ubuntu-14.04
-    image: ${REGISTRY_BASE_URL}/bare-base:ubuntu-14.04
+    image: ${REGISTRY_BASE_URL:-localhost}/bare-base:ubuntu-14.04
     depends_on:
       - base-ubuntu-14.04
 
@@ -66,7 +66,7 @@ services:
     build:
       context: .
       dockerfile: bare-base/Dockerfile.ubuntu-18.04
-    image: ${REGISTRY_BASE_URL}/bare-base:ubuntu-18.04
+    image: ${REGISTRY_BASE_URL:-localhost}/bare-base:ubuntu-18.04
     depends_on:
       - base-ubuntu-18.04
 
@@ -74,7 +74,7 @@ services:
     build:
       context: .
       dockerfile: bare-base/Dockerfile.ubuntu-22.04
-    image: ${REGISTRY_BASE_URL}/bare-base:ubuntu-22.04
+    image: ${REGISTRY_BASE_URL:-localhost}/bare-base:ubuntu-22.04
     depends_on:
       - base-ubuntu-22.04
 
@@ -82,7 +82,7 @@ services:
     build:
       context: .
       dockerfile: bare-base/Dockerfile.ubuntu-24.04
-    image: ${REGISTRY_BASE_URL}/bare-base:ubuntu-24.04
+    image: ${REGISTRY_BASE_URL:-localhost}/bare-base:ubuntu-24.04
     depends_on:
       - base-ubuntu-24.04
 
@@ -90,7 +90,7 @@ services:
     build:
       context: .
       dockerfile: bare/Dockerfile.ubuntu-14.04
-    image: ${REGISTRY_BASE_URL}/bare:ubuntu-14.04
+    image: ${REGISTRY_BASE_URL:-localhost}/bare:ubuntu-14.04
     depends_on:
       - bare-base-ubuntu-14.04
 
@@ -98,7 +98,7 @@ services:
     build:
       context: .
       dockerfile: bare/Dockerfile.ubuntu-18.04
-    image: ${REGISTRY_BASE_URL}/bare:ubuntu-18.04
+    image: ${REGISTRY_BASE_URL:-localhost}/bare:ubuntu-18.04
     depends_on:
       - bare-base-ubuntu-18.04
 
@@ -106,7 +106,7 @@ services:
     build:
       context: .
       dockerfile: bare/Dockerfile.ubuntu-22.04
-    image: ${REGISTRY_BASE_URL}/bare:ubuntu-22.04
+    image: ${REGISTRY_BASE_URL:-localhost}/bare:ubuntu-22.04
     depends_on:
       - bare-base-ubuntu-22.04
 
@@ -114,7 +114,7 @@ services:
     build:
       context: .
       dockerfile: bare/Dockerfile.ubuntu-24.04
-    image: ${REGISTRY_BASE_URL}/bare:ubuntu-24.04
+    image: ${REGISTRY_BASE_URL:-localhost}/bare:ubuntu-24.04
     depends_on:
       - bare-base-ubuntu-24.04
 
@@ -122,7 +122,7 @@ services:
     build:
       context: .
       dockerfile: bare-devel/Dockerfile.ubuntu-14.04
-    image: ${REGISTRY_BASE_URL}/bare-devel:ubuntu-14.04
+    image: ${REGISTRY_BASE_URL:-localhost}/bare-devel:ubuntu-14.04
     depends_on:
       - bare-base-ubuntu-14.04
 
@@ -130,7 +130,7 @@ services:
     build:
       context: .
       dockerfile: bare-devel/Dockerfile.ubuntu-18.04
-    image: ${REGISTRY_BASE_URL}/bare-devel:ubuntu-18.04
+    image: ${REGISTRY_BASE_URL:-localhost}/bare-devel:ubuntu-18.04
     depends_on:
       - bare-base-ubuntu-18.04
 
@@ -138,7 +138,7 @@ services:
     build:
       context: .
       dockerfile: bare-devel/Dockerfile.ubuntu-22.04
-    image: ${REGISTRY_BASE_URL}/bare-devel:ubuntu-22.04
+    image: ${REGISTRY_BASE_URL:-localhost}/bare-devel:ubuntu-22.04
     depends_on:
       - bare-base-ubuntu-22.04
 
@@ -146,7 +146,7 @@ services:
     build:
       context: .
       dockerfile: bare-devel/Dockerfile.ubuntu-24.04
-    image: ${REGISTRY_BASE_URL}/bare-devel:ubuntu-24.04
+    image: ${REGISTRY_BASE_URL:-localhost}/bare-devel:ubuntu-24.04
     depends_on:
       - bare-base-ubuntu-24.04
 
@@ -154,7 +154,7 @@ services:
     build:
       context: .
       dockerfile: yocto-base/Dockerfile.ubuntu-16.04
-    image: ${REGISTRY_BASE_URL}/yocto-base:ubuntu-16.04
+    image: ${REGISTRY_BASE_URL:-localhost}/yocto-base:ubuntu-16.04
     depends_on:
       - base-ubuntu-16.04
 
@@ -162,7 +162,7 @@ services:
     build:
       context: .
       dockerfile: yocto-base/Dockerfile.ubuntu-18.04
-    image: ${REGISTRY_BASE_URL}/yocto-base:ubuntu-18.04
+    image: ${REGISTRY_BASE_URL:-localhost}/yocto-base:ubuntu-18.04
     depends_on:
       - base-ubuntu-18.04
 
@@ -170,7 +170,7 @@ services:
     build:
         context: .
         dockerfile: yocto-base/Dockerfile.ubuntu-20.04
-    image: ${REGISTRY_BASE_URL}/yocto-base:ubuntu-20.04
+    image: ${REGISTRY_BASE_URL:-localhost}/yocto-base:ubuntu-20.04
     depends_on:
       - base-ubuntu-20.04
 
@@ -178,7 +178,7 @@ services:
     build:
         context: .
         dockerfile: yocto-base/Dockerfile.ubuntu-22.04
-    image: ${REGISTRY_BASE_URL}/yocto-base:ubuntu-22.04
+    image: ${REGISTRY_BASE_URL:-localhost}/yocto-base:ubuntu-22.04
     depends_on:
       - base-ubuntu-22.04
 
@@ -186,7 +186,7 @@ services:
     build:
         context: .
         dockerfile: yocto-base/Dockerfile.ubuntu-24.04
-    image: ${REGISTRY_BASE_URL}/yocto-base:ubuntu-24.04
+    image: ${REGISTRY_BASE_URL:-localhost}/yocto-base:ubuntu-24.04
     depends_on:
       - base-ubuntu-24.04
 
@@ -194,7 +194,7 @@ services:
     build:
       context: .
       dockerfile: yocto/Dockerfile.ubuntu-16.04
-    image: ${REGISTRY_BASE_URL}/yocto:ubuntu-16.04
+    image: ${REGISTRY_BASE_URL:-localhost}/yocto:ubuntu-16.04
     depends_on:
       - yocto-base-ubuntu-16.04
 
@@ -202,7 +202,7 @@ services:
     build:
       context: .
       dockerfile: yocto/Dockerfile.ubuntu-18.04
-    image: ${REGISTRY_BASE_URL}/yocto:ubuntu-18.04
+    image: ${REGISTRY_BASE_URL:-localhost}/yocto:ubuntu-18.04
     depends_on:
       - yocto-base-ubuntu-18.04
 
@@ -210,7 +210,7 @@ services:
     build:
         context: .
         dockerfile: yocto/Dockerfile.ubuntu-20.04
-    image: ${REGISTRY_BASE_URL}/yocto:ubuntu-20.04
+    image: ${REGISTRY_BASE_URL:-localhost}/yocto:ubuntu-20.04
     depends_on:
       - yocto-base-ubuntu-20.04
 
@@ -218,7 +218,7 @@ services:
     build:
         context: .
         dockerfile: yocto/Dockerfile.ubuntu-22.04
-    image: ${REGISTRY_BASE_URL}/yocto:ubuntu-22.04
+    image: ${REGISTRY_BASE_URL:-localhost}/yocto:ubuntu-22.04
     depends_on:
       - yocto-base-ubuntu-22.04
 
@@ -226,7 +226,7 @@ services:
     build:
         context: .
         dockerfile: yocto/Dockerfile.ubuntu-24.04
-    image: ${REGISTRY_BASE_URL}/yocto:ubuntu-24.04
+    image: ${REGISTRY_BASE_URL:-localhost}/yocto:ubuntu-24.04
     depends_on:
       - yocto-base-ubuntu-24.04
 
@@ -234,7 +234,7 @@ services:
     build:
       context: .
       dockerfile: yocto-devel/Dockerfile.ubuntu-16.04
-    image: ${REGISTRY_BASE_URL}/yocto-devel:ubuntu-16.04
+    image: ${REGISTRY_BASE_URL:-localhost}/yocto-devel:ubuntu-16.04
     depends_on:
       - yocto-base-ubuntu-16.04
 
@@ -242,7 +242,7 @@ services:
     build:
       context: .
       dockerfile: yocto-devel/Dockerfile.ubuntu-18.04
-    image: ${REGISTRY_BASE_URL}/yocto-devel:ubuntu-18.04
+    image: ${REGISTRY_BASE_URL:-localhost}/yocto-devel:ubuntu-18.04
     depends_on:
       - yocto-base-ubuntu-18.04
 
@@ -250,7 +250,7 @@ services:
     build:
         context: .
         dockerfile: yocto-devel/Dockerfile.ubuntu-20.04
-    image: ${REGISTRY_BASE_URL}/yocto-devel:ubuntu-20.04
+    image: ${REGISTRY_BASE_URL:-localhost}/yocto-devel:ubuntu-20.04
     depends_on:
       - yocto-base-ubuntu-20.04
 
@@ -258,7 +258,7 @@ services:
     build:
         context: .
         dockerfile: yocto-devel/Dockerfile.ubuntu-22.04
-    image: ${REGISTRY_BASE_URL}/yocto-devel:ubuntu-22.04
+    image: ${REGISTRY_BASE_URL:-localhost}/yocto-devel:ubuntu-22.04
     depends_on:
       - yocto-base-ubuntu-22.04
 
@@ -266,7 +266,7 @@ services:
     build:
         context: .
         dockerfile: yocto-devel/Dockerfile.ubuntu-24.04
-    image: ${REGISTRY_BASE_URL}/yocto-devel:ubuntu-24.04
+    image: ${REGISTRY_BASE_URL:-localhost}/yocto-devel:ubuntu-24.04
     depends_on:
       - yocto-base-ubuntu-24.04
 
@@ -274,7 +274,7 @@ services:
     build:
       context: .
       dockerfile: ptxdist-base/Dockerfile.ubuntu-14.04
-    image: ${REGISTRY_BASE_URL}/ptxdist-base:ubuntu-14.04
+    image: ${REGISTRY_BASE_URL:-localhost}/ptxdist-base:ubuntu-14.04
     depends_on:
       - base-ubuntu-14.04
 
@@ -282,7 +282,7 @@ services:
     build:
       context: .
       dockerfile: ptxdist-base/Dockerfile.ubuntu-18.04
-    image: ${REGISTRY_BASE_URL}/ptxdist-base:ubuntu-18.04
+    image: ${REGISTRY_BASE_URL:-localhost}/ptxdist-base:ubuntu-18.04
     depends_on:
       - base-ubuntu-18.04
 
@@ -290,7 +290,7 @@ services:
     build:
       context: .
       dockerfile: ptxdist/Dockerfile.ubuntu-14.04
-    image: ${REGISTRY_BASE_URL}/ptxdist:ubuntu-14.04
+    image: ${REGISTRY_BASE_URL:-localhost}/ptxdist:ubuntu-14.04
     depends_on:
       - ptxdist-base-ubuntu-14.04
 
@@ -298,7 +298,7 @@ services:
     build:
       context: .
       dockerfile: ptxdist/Dockerfile.ubuntu-18.04
-    image: ${REGISTRY_BASE_URL}/ptxdist:ubuntu-18.04
+    image: ${REGISTRY_BASE_URL:-localhost}/ptxdist:ubuntu-18.04
     depends_on:
       - ptxdist-base-ubuntu-18.04
 
@@ -306,7 +306,7 @@ services:
     build:
       context: .
       dockerfile: ptxdist-devel/Dockerfile.ubuntu-14.04
-    image: ${REGISTRY_BASE_URL}/ptxdist-devel:ubuntu-14.04
+    image: ${REGISTRY_BASE_URL:-localhost}/ptxdist-devel:ubuntu-14.04
     depends_on:
       - ptxdist-base-ubuntu-14.04
 
@@ -314,7 +314,7 @@ services:
     build:
       context: .
       dockerfile: ptxdist-devel/Dockerfile.ubuntu-18.04
-    image: ${REGISTRY_BASE_URL}/ptxdist-devel:ubuntu-18.04
+    image: ${REGISTRY_BASE_URL:-localhost}/ptxdist-devel:ubuntu-18.04
     depends_on:
       - ptxdist-base-ubuntu-18.04
 
@@ -322,6 +322,6 @@ services:
     build:
       context: .
       dockerfile: ccs-base/Dockerfile.ubuntu-20.04
-    image: ${REGISTRY_BASE_URL}/ccs-base:ubuntu-20.04
+    image: ${REGISTRY_BASE_URL:-localhost}/ccs-base:ubuntu-20.04
     depends_on:
       - base-ubuntu-20.04

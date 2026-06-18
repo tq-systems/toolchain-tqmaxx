@@ -10,7 +10,7 @@
 PROXY ?= ""
 
 # container registry for tq-modules
-REGISTRY_BASE_URL ?= ${REGISTRY_BASE_URL}
+REGISTRY_BASE_URL ?= localhost
 
 # user name and id's for build user
 CI_USER_NAME ?= sysiphos
