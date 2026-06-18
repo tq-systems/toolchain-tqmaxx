@@ -35,8 +35,8 @@ The following things are used in this repo and throughout this README:
 
 - This git repo contains multiple docker image definitions for CI and for
   usage on a development workstation
-- Access to a docker registry for the docker images. To abstract this the
-  `${REGISTRY_BASE_URL}`variable is used
+- Access to a docker registry for the docker images. To abstract this, the
+  `${REGISTRY_BASE_URL}` variable is used
 - Usage of a `docker-compose.yaml` file and the `docker-compose-v2` tool to declare
   dependencies between docker images (called services in docker-compose)
 - The changelog is created with [changie](https://changie.dev/guide/installation/)
@@ -55,7 +55,14 @@ To work with an own container registry the URL has to be supplied via the enviro
 (this is necessary only once per shell session):
 
 ```bash
-$export REGISTRY_BASE_URL=${MY_REGISTRY_BASE_URL}
+$ export REGISTRY_BASE_URL=${MY_REGISTRY_BASE_URL}
+```
+
+If no registry is available, any local prefix works. Images are then only stored in the
+local Docker image cache and cannot be pushed:
+
+```bash
+$ export REGISTRY_BASE_URL=localhost
 ```
 
 ### Default user
@@ -93,34 +100,32 @@ The [Default user](#default-user) could be changed for bare, ptxdist and yocto i
 
 ### Deploy images
 
-Push image(s) to the configured registry:
+Push image(s) to the configured registry. Omit `IMAGE` to push all services:
 
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
-# if IMAGE is not set, all services declared in docker-compose.yaml are pushed
-$ IMAGE=<service name from docker-compose.yaml>
 $ docker login -u <user> ${REGISTRY_BASE_URL}
-$ docker compose push ${IMAGE}
+$ docker compose push                                    # all images
+$ docker compose push <service name from docker-compose.yaml>  # single image
 $ docker logout
 ```
 
 ### Get images
 
-Pull image(s) from the configured registry:
+Pull image(s) from the configured registry. Omit the service name to pull all:
 
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
-# if IMAGE is not set, all services declared in docker-compose.yaml are pulled
-$ IMAGE=<service name from docker-compose.yaml>
 $ docker login -u <user> ${REGISTRY_BASE_URL}
-$ docker compose pull ${IMAGE}
+$ docker compose pull                                    # all images
+$ docker compose pull <service name from docker-compose.yaml>  # single image
 $ docker logout
 ```
 
 ### Clean local stored images
 
 ```bash
-$docker system prune -f
+$ docker system prune -f
 ```
 
 ### Run shell inside container
@@ -167,30 +172,70 @@ $ make new
 
 The [Default user](#default-user) could be changed for bare, ptxdist and yocto images.
 
+### Build prehistoric images
+
+Legacy images (Ubuntu 14.04/16.04 base, all PTXdist, bare 14.04, Yocto 16.04) are
+grouped under `*-prehistoric` targets and are **not** built by `make all`:
+
+```bash
+$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ make all-prehistoric
+$ make new-prehistoric  # same but --no-cache
+```
+
 ### Build a single image
 
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
-$ IMAGE=<service name from docker-compose.yaml>
-$ make image IMAGE=${IMAGE}
+$ make image IMAGE=<service name from docker-compose.yaml>
+```
+
+Note: `docker compose build` does **not** automatically build `depends_on` dependencies
+when a single service is specified — it expects them to already exist in the local cache.
+To build a leaf image from scratch, build the chain manually in order, e.g.:
+
+```bash
+$ make image IMAGE=base-ubuntu-24.04
+$ make image IMAGE=bare-base-ubuntu-24.04
+$ make image IMAGE=bare-devel-ubuntu-24.04
+```
+
+To rebuild only the target image when its dependencies are already cached, use `--no-deps`:
+
+```bash
+$ docker compose build --no-deps \
+    --build-arg registry_base_url=${REGISTRY_BASE_URL} \
+    <service name from docker-compose.yaml>
 ```
 
 The [Default user](#default-user) could be changed for bare, ptxdist and yocto images.
 
 ### Run shell inside container
 
-See [Container for local development](#container-for-local-development)).
+See [Container for local development](#container-for-local-development).
 
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
 $ IMAGE=<service name from docker-compose.yaml> make run
 ```
 
+### Push and pull images
+
+`push` and `pull` operate on all images when `IMAGE` is not set, or on a single
+image when `IMAGE` is specified. Login to the registry is required:
+
+```bash
+$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ docker login -u <user> ${REGISTRY_BASE_URL}
+$ make push                          # push all images
+$ make push IMAGE=yocto-ubuntu-22.04 # push single image
+$ docker logout
+```
+
 ### Other commands
 
-The Makefile also provides the targets `push`, `pull`, `update`, `clean`
-and `print` that affect all images. Nevertheless, login to the registry is
-needed for pushing, pulling and updating the images
+The Makefile also provides the targets `update`, `clean` and `print`.
+Login to the registry is needed for `update`.
 
 ## Supported images
 
@@ -200,16 +245,19 @@ adds uid/gid mapping for local development and the plain variant (without
 suffix) adds CI support tools (e.g. GitLab Runner, glab-cli). The `*-base`
 images are intermediate layers and not intended for direct use.
 
+Images marked with ¹ are **prehistoric** — they are only built by
+`make all-prehistoric`, not by `make all`.
+
 ### Base
 
-| Service name      |   Image and tag   | Purpose                                           |
-|:------------------|:-----------------:|:--------------------------------------------------|
-| base-ubuntu-14.04 | base:ubuntu-14.04 | Base image for Ubuntu 14.04, certificates, locale |
-| base-ubuntu-16.04 | base:ubuntu-16.04 | Base image for Ubuntu 16.04, certificates, locale |
-| base-ubuntu-18.04 | base:ubuntu-18.04 | Base image for Ubuntu 18.04, certificates, locale |
-| base-ubuntu-20.04 | base:ubuntu-20.04 | Base image for Ubuntu 20.04, certificates, locale |
-| base-ubuntu-22.04 | base:ubuntu-22.04 | Base image for Ubuntu 22.04, certificates, locale |
-| base-ubuntu-24.04 | base:ubuntu-24.04 | Base image for Ubuntu 24.04, certificates, locale |
+| Service name      |   Image and tag   | Purpose                                              |
+|:------------------|:-----------------:|:-----------------------------------------------------|
+| base-ubuntu-14.04 | base:ubuntu-14.04 | Base image for Ubuntu 14.04, certificates, locale ¹  |
+| base-ubuntu-16.04 | base:ubuntu-16.04 | Base image for Ubuntu 16.04, certificates, locale ¹  |
+| base-ubuntu-18.04 | base:ubuntu-18.04 | Base image for Ubuntu 18.04, certificates, locale    |
+| base-ubuntu-20.04 | base:ubuntu-20.04 | Base image for Ubuntu 20.04, certificates, locale    |
+| base-ubuntu-22.04 | base:ubuntu-22.04 | Base image for Ubuntu 22.04, certificates, locale    |
+| base-ubuntu-24.04 | base:ubuntu-24.04 | Base image for Ubuntu 24.04, certificates, locale    |
 
 ### Python
 
@@ -219,38 +267,40 @@ images are intermediate layers and not intended for direct use.
 
 ### PTXdist
 
-| Service name               |       Image and tag        | Purpose                                            |
-|:---------------------------|:--------------------------:|:---------------------------------------------------|
-| ptxdist-devel-ubuntu-14.04 | ptxdist-devel:ubuntu-14.04 | PTXdist for Ubuntu 14.04, local user (uid mapping) |
-| ptxdist-devel-ubuntu-18.04 | ptxdist-devel:ubuntu-18.04 | PTXdist for Ubuntu 18.04, local user (uid mapping) |
-| ptxdist-ubuntu-14.04       |    ptxdist:ubuntu-14.04    | PTXdist for Ubuntu 14.04, CI support               |
-| ptxdist-ubuntu-18.04       |    ptxdist:ubuntu-18.04    | PTXdist for Ubuntu 18.04, CI support               |
+| Service name               |       Image and tag        | Purpose                                               |
+|:---------------------------|:--------------------------:|:------------------------------------------------------|
+| ptxdist-devel-ubuntu-14.04 | ptxdist-devel:ubuntu-14.04 | PTXdist for Ubuntu 14.04, local user (uid mapping) ¹  |
+| ptxdist-devel-ubuntu-18.04 | ptxdist-devel:ubuntu-18.04 | PTXdist for Ubuntu 18.04, local user (uid mapping) ¹  |
+| ptxdist-ubuntu-14.04       |    ptxdist:ubuntu-14.04    | PTXdist for Ubuntu 14.04, CI support ¹                |
+| ptxdist-ubuntu-18.04       |    ptxdist:ubuntu-18.04    | PTXdist for Ubuntu 18.04, CI support ¹                |
 
 ### Yocto / OpenEmbedded
 
 | Service name             |      Image and tag       | Purpose                                             |
 |:-------------------------|:------------------------:|:----------------------------------------------------|
-| yocto-devel-ubuntu-16.04 | yocto-devel:ubuntu-16.04 | Yocto/OE for Ubuntu 16.04, local user (uid mapping) |
-| yocto-devel-ubuntu-18.04 | yocto-devel:ubuntu-18.04 | Yocto/OE for Ubuntu 18.04, local user (uid mapping) |
-| yocto-devel-ubuntu-20.04 | yocto-devel:ubuntu-20.04 | Yocto/OE for Ubuntu 20.04, local user (uid mapping) |
-| yocto-devel-ubuntu-22.04 | yocto-devel:ubuntu-22.04 | Yocto/OE for Ubuntu 22.04, local user (uid mapping) |
-| yocto-devel-ubuntu-24.04 | yocto-devel:ubuntu-24.04 | Yocto/OE for Ubuntu 24.04, local user (uid mapping) |
-| yocto-ubuntu-16.04       |    yocto:ubuntu-16.04    | Yocto/OE for Ubuntu 16.04, CI support               |
-| yocto-ubuntu-18.04       |    yocto:ubuntu-18.04    | Yocto/OE for Ubuntu 18.04, CI support               |
-| yocto-ubuntu-20.04       |    yocto:ubuntu-20.04    | Yocto/OE for Ubuntu 20.04, CI support               |
-| yocto-ubuntu-22.04       |    yocto:ubuntu-22.04    | Yocto/OE for Ubuntu 22.04, CI support               |
-| yocto-ubuntu-24.04       |    yocto:ubuntu-24.04    | Yocto/OE for Ubuntu 24.04, CI support               |
+| yocto-devel-ubuntu-16.04 | yocto-devel:ubuntu-16.04 | Yocto/OE for Ubuntu 16.04, local user (uid mapping) ¹ |
+| yocto-devel-ubuntu-18.04 | yocto-devel:ubuntu-18.04 | Yocto/OE for Ubuntu 18.04, local user (uid mapping)   |
+| yocto-devel-ubuntu-20.04 | yocto-devel:ubuntu-20.04 | Yocto/OE for Ubuntu 20.04, local user (uid mapping)   |
+| yocto-devel-ubuntu-22.04 | yocto-devel:ubuntu-22.04 | Yocto/OE for Ubuntu 22.04, local user (uid mapping)   |
+| yocto-devel-ubuntu-24.04 | yocto-devel:ubuntu-24.04 | Yocto/OE for Ubuntu 24.04, local user (uid mapping)   |
+| yocto-ubuntu-16.04       |    yocto:ubuntu-16.04    | Yocto/OE for Ubuntu 16.04, CI support ¹               |
+| yocto-ubuntu-18.04       |    yocto:ubuntu-18.04    | Yocto/OE for Ubuntu 18.04, CI support                 |
+| yocto-ubuntu-20.04       |    yocto:ubuntu-20.04    | Yocto/OE for Ubuntu 20.04, CI support                 |
+| yocto-ubuntu-22.04       |    yocto:ubuntu-22.04    | Yocto/OE for Ubuntu 22.04, CI support                 |
+| yocto-ubuntu-24.04       |    yocto:ubuntu-24.04    | Yocto/OE for Ubuntu 24.04, CI support                 |
 
 ### Bare (cross-toolchains only)
 
-| Service name            |      Image and tag      | Purpose                                                       |
-|:------------------------|:-----------------------:|:--------------------------------------------------------------|
-| bare-devel-ubuntu-18.04 | bare-devel:ubuntu-18.04 | Cross-toolchains only, Ubuntu 18.04, local user (uid mapping) |
-| bare-devel-ubuntu-22.04 | bare-devel:ubuntu-22.04 | Cross-toolchains only, Ubuntu 22.04, local user (uid mapping) |
-| bare-devel-ubuntu-24.04 | bare-devel:ubuntu-24.04 | Cross-toolchains only, Ubuntu 24.04, local user (uid mapping) |
-| bare-ubuntu-18.04       |    bare:ubuntu-18.04    | Cross-toolchains only, Ubuntu 18.04, CI support               |
-| bare-ubuntu-22.04       |    bare:ubuntu-22.04    | Cross-toolchains only, Ubuntu 22.04, CI support               |
-| bare-ubuntu-24.04       |    bare:ubuntu-24.04    | Cross-toolchains only, Ubuntu 24.04, CI support               |
+| Service name            |      Image and tag      | Purpose                                                          |
+|:------------------------|:-----------------------:|:-----------------------------------------------------------------|
+| bare-devel-ubuntu-14.04 | bare-devel:ubuntu-14.04 | Cross-toolchains only, Ubuntu 14.04, local user (uid mapping) ¹ |
+| bare-devel-ubuntu-18.04 | bare-devel:ubuntu-18.04 | Cross-toolchains only, Ubuntu 18.04, local user (uid mapping)   |
+| bare-devel-ubuntu-22.04 | bare-devel:ubuntu-22.04 | Cross-toolchains only, Ubuntu 22.04, local user (uid mapping)   |
+| bare-devel-ubuntu-24.04 | bare-devel:ubuntu-24.04 | Cross-toolchains only, Ubuntu 24.04, local user (uid mapping)   |
+| bare-ubuntu-14.04       |    bare:ubuntu-14.04    | Cross-toolchains only, Ubuntu 14.04, CI support ¹               |
+| bare-ubuntu-18.04       |    bare:ubuntu-18.04    | Cross-toolchains only, Ubuntu 18.04, CI support                 |
+| bare-ubuntu-22.04       |    bare:ubuntu-22.04    | Cross-toolchains only, Ubuntu 22.04, CI support                 |
+| bare-ubuntu-24.04       |    bare:ubuntu-24.04    | Cross-toolchains only, Ubuntu 24.04, CI support                 |
 
 ### CCS (TI Code Composer Studio)
 
@@ -306,14 +356,14 @@ on every container that is started with the `run` target.
 
 ```bash
 $ export REGISTRY_BASE_URL=<registry server/path on server>
-$ RUN_ARGS="--volume=${HOME}/devel:/devel
+$ RUN_ARGS="--volume=${HOME}/devel:/devel"
 $ IMAGE=<service name from docker-compose.yaml>
 $ make run IMAGE=${IMAGE} RUN_ARGS="${RUN_ARGS}"
 ```
 
 ### Container for local development
 
-For ptxdist and yocto a set of templates is supplied, that allow mapping of
+For ptxdist, yocto and bare a set of templates is supplied, that allow mapping of
 user and group ID between host and container. These images have the string
 `devel` in their name.
 
@@ -337,4 +387,13 @@ $ export CROSS_COMPILE=<path to gcc>/<gcc base name>
 $ export ARCH=[arm|arm64]
 $ make <board config>
 $ make
+```
+
+To run a single command non-interactively, pass it after the service name:
+
+```bash
+$ docker compose run \
+    -e HOST_USER_ID=$(id -u) \
+    -e HOST_USER_GID=$(id -g) \
+    <service name from docker-compose.yaml> make <board config>
 ```
