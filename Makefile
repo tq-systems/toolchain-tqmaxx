@@ -116,10 +116,10 @@ run: check_image
 	docker compose run ${RUN_ARGS} ${IMAGE}
 
 push:
-	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker compose push
+	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker compose push ${IMAGE}
 
 pull:
-	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker compose pull
+	export REGISTRY_BASE_URL=${REGISTRY_BASE_URL} && docker compose pull ${IMAGE}
 
 clean:
 	docker system prune -f
