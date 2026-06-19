@@ -32,4 +32,9 @@ usermod  -u ${USER_ID}  ${USER}
 groupmod -g ${USER_GID} ${USER}
 usermod  -g ${USER_GID} ${USER}
 
-su - "${USER}"
+if [ "$#" -gt 0 ]; then
+    exec su - "${USER}" -c "$*"
+else
+    exec su - "${USER}"
+fi
+
