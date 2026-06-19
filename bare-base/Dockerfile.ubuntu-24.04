@@ -19,24 +19,17 @@ RUN \
 	rm gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2
 
 RUN \
-	wget https://developer.arm.com/-/media/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz && \
-	tar --xz -xf arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz --directory /opt && \
-	rm arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
-	
-RUN \
 	wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 && \
 	tar -jxf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 --directory /opt && \
 	rm gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
 
 RUN \
-	wget https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz && \
-	tar --xz -xf arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz --directory /opt && \
-	rm arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz
-
-RUN \
-	wget https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi.tar.xz && \
-	tar --xz -xf arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi.tar.xz --directory /opt && \
-	rm arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi.tar.xz
+	for TC_VER in 12.2.rel1 13.2.rel1 14.2.rel1 15.2.rel1; do \
+		TC=arm-gnu-toolchain-${TC_VER}-x86_64-arm-none-eabi.tar.xz && \
+		wget https://developer.arm.com/-/media/Files/downloads/gnu/${TC_VER}/binrel/${TC} && \
+		tar --xz -xf ${TC} --directory /opt && \
+		rm ${TC}; \
+	done
 	
 RUN \
 	wget https://github.com/Kitware/CMake/releases/download/v3.31.4/cmake-3.31.4-linux-x86_64.tar.gz && \
