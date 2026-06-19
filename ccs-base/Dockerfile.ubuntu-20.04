@@ -15,7 +15,6 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
   binutils                      \
   build-essential               \
   ca-certificates               \
-  curl                          \
   libasound2                    \
   libc6-i386                    \
   libcanberra-gtk-module        \
