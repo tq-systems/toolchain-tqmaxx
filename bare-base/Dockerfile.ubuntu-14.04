@@ -37,7 +37,7 @@ RUN cd /root && for toolchain in \
 		https://debian.pengutronix.de/debian/pool/main/o/oselas.toolchain/oselas.toolchain-2014.12.2-arm-v5te-linux-gnueabi-gcc-4.9.2-glibc-2.20-binutils-2.24-kernel-3.16-sanitized_2014.12.2_amd64.deb \
 	; do \
 		echo ${toolchain} && \
-		wget ${toolchain}; \
-	done && \
-	dpkg -i *.deb && \
-	rm -f *.deb
+		wget ${toolchain} && \
+		dpkg -i $(basename ${toolchain}) && \
+		rm $(basename ${toolchain}); \
+	done

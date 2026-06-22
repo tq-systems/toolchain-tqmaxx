@@ -60,7 +60,7 @@ RUN cd /root && for toolchain in \
 		https://debian.pengutronix.de/debian/pool/main/o/oselas.toolchain/oselas.toolchain-2016.06.1-arm-v5te-linux-gnueabi-gcc-5.4.0-glibc-2.23-binutils-2.26-kernel-4.6-sanitized_2016.06.1_amd64.deb \
 	; do \
 		echo ${toolchain} && \
-		wget ${toolchain}; \
-	done && \
-	dpkg -i *.deb && \
-	rm -f *.deb
+		wget ${toolchain} && \
+		dpkg -i $(basename ${toolchain}) && \
+		rm $(basename ${toolchain}); \
+	done
