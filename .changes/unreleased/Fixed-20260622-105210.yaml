@@ -1,0 +1,3 @@
+kind: Fixed
+body: 'bare-base/Dockerfile.ubuntu-24.04: wrong modification of /etc/apt/sources.list'
+time: 2026-06-22T10:52:10.784612124+02:00
