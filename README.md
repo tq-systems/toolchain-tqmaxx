@@ -58,12 +58,8 @@ To work with an own container registry the URL has to be supplied via the enviro
 $ export REGISTRY_BASE_URL=${MY_REGISTRY_BASE_URL}
 ```
 
-If no registry is available, any local prefix works. Images are then only stored in the
-local Docker image cache and cannot be pushed:
-
-```bash
-$ export REGISTRY_BASE_URL=localhost
-```
+If `REGISTRY_BASE_URL` is not set, it defaults to `localhost`. Images are then only
+stored in the local Docker image cache and cannot be pushed to a registry.
 
 ### Default user
 
@@ -80,7 +76,7 @@ Call docker compose with build-arg to change the default user:
 When using the Makefile approach set the Environment variables:
 
 ```bash
-$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ export REGISTRY_BASE_URL=<registry server/path on server>  # optional, defaults to localhost
 $ export CI_USER_NAME=<name>
 $ export CI_USER_UID=<uid>
 $ export CI_USER_GID=<gid>
@@ -91,7 +87,7 @@ $ make all
 Use *docker compose* to build an image:
 
 ```bash
-$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ export REGISTRY_BASE_URL=<registry server/path on server>  # optional, defaults to localhost
 $ IMAGE=<service name from docker compose.yaml>
 $ docker compose build --build-arg registry_base_url=${REGISTRY_BASE_URL} ${IMAGE}
 ```
@@ -135,7 +131,7 @@ containers with development images, see [Container for local
 development](#container-for-local-development).
 
 ```bash
-$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ export REGISTRY_BASE_URL=<registry server/path on server>  # optional, defaults to localhost
 $ IMAGE=<service name from docker-compose.yaml>
 $ docker compose run --rm ${IMAGE}
 ```
@@ -143,7 +139,7 @@ $ docker compose run --rm ${IMAGE}
 ### Rebuild image from scratch
 
 ```bash
-$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ export REGISTRY_BASE_URL=<registry server/path on server>  # optional, defaults to localhost
 $ IMAGE=<service name from docker-compose.yaml>
 $ docker compose build --build-arg registry_base_url=${REGISTRY_BASE_URL} --no-cache --force-rm ${IMAGE}
 ```
@@ -151,13 +147,13 @@ $ docker compose build --build-arg registry_base_url=${REGISTRY_BASE_URL} --no-c
 ## Makefile support
 
 For maintenance and development a simple Makefile is provided, that wraps the
-above mentioned steps and allows (re)building of all images. Again, setting the
-REGISTRY_BASE_URL is only needed once per shell session.
+above mentioned steps and allows (re)building of all images. Setting
+`REGISTRY_BASE_URL` is optional — it defaults to `localhost` if not set.
 
 ### Build all images
 
 ```bash
-$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ export REGISTRY_BASE_URL=<registry server/path on server>  # optional, defaults to localhost
 $ make all
 ```
 
@@ -166,7 +162,7 @@ The [Default user](#default-user) could be changed for bare, ptxdist and yocto i
 ### Rebuild all images from scratch
 
 ```bash
-$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ export REGISTRY_BASE_URL=<registry server/path on server>  # optional, defaults to localhost
 $ make new
 ```
 
@@ -178,7 +174,7 @@ Legacy images (Ubuntu 14.04/16.04 base, all PTXdist, bare 14.04, Yocto 16.04) ar
 grouped under `*-prehistoric` targets and are **not** built by `make all`:
 
 ```bash
-$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ export REGISTRY_BASE_URL=<registry server/path on server>  # optional, defaults to localhost
 $ make all-prehistoric
 $ make new-prehistoric  # same but --no-cache
 ```
@@ -186,7 +182,7 @@ $ make new-prehistoric  # same but --no-cache
 ### Build a single image
 
 ```bash
-$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ export REGISTRY_BASE_URL=<registry server/path on server>  # optional, defaults to localhost
 $ make image IMAGE=<service name from docker-compose.yaml>
 ```
 
@@ -215,7 +211,7 @@ The [Default user](#default-user) could be changed for bare, ptxdist and yocto i
 See [Container for local development](#container-for-local-development).
 
 ```bash
-$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ export REGISTRY_BASE_URL=<registry server/path on server>  # optional, defaults to localhost
 $ IMAGE=<service name from docker-compose.yaml> make run
 ```
 
@@ -351,7 +347,7 @@ The options that can be set in the `docker-compose.yaml` file, can also be
 passed as options to the `docker compose` CLI:
 
 ```bash
-$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ export REGISTRY_BASE_URL=<registry server/path on server>  # optional, defaults to localhost
 $ docker compose run --volume=${HOME}/devel:/devel <service name from docker-compose.yaml>
 ```
 
@@ -361,7 +357,7 @@ This way, the `run` target can be used as a shorthand and volumes are mounted
 on every container that is started with the `run` target.
 
 ```bash
-$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ export REGISTRY_BASE_URL=<registry server/path on server>  # optional, defaults to localhost
 $ RUN_ARGS="--volume=${HOME}/devel:/devel"
 $ IMAGE=<service name from docker-compose.yaml>
 $ make run IMAGE=${IMAGE} RUN_ARGS="${RUN_ARGS}"
@@ -383,7 +379,7 @@ The following example shows, how to use this:
   development host
 
 ```bash
-$ export REGISTRY_BASE_URL=<registry server/path on server>
+$ export REGISTRY_BASE_URL=<registry server/path on server>  # optional, defaults to localhost
 $ IMAGE=<service name from docker-compose.yaml>
 $ RUN_ARGS="--name <name> --rm -e HOST_USER_ID=$(id -u) -e HOST_USER_GID=$(id -g) --volume ${HOME}/devel:/devel"
 $ make run RUN_ARGS="${RUN_ARGS}" IMAGE="${IMAGE}"
