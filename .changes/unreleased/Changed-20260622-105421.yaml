@@ -1,3 +1,0 @@
-kind: Changed
-body: 'base/Dockerfile.ubuntu-2[0,2,4].04: install curl in base'
-time: 2026-06-22T10:54:21.120040853+02:00
